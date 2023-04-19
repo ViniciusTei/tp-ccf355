@@ -40,3 +40,31 @@ estimação, etc…), que tipo de relacionamentos constrói (seguidores, comunid
 etc...). Embora o sistema precise ter uma interface gráfica funcional, a mesma não será
 avaliada na distribuição de notas. Dessa maneira, o foco deverá estar no desenvolvimento
 dos serviços e não na visualização dos mesmos.
+
+# Trabalho 2
+
+Neste segunda parte do trabalho, os alunos deverão fazer a modelagem do sistema
+distribuído especificado na parte 1.
+Ao pensarem sobre os modelos fundamentais, tentem criar as respostas pensando no negócio do sistema, bem como nos modelos físico e de arquitetura selecionados. Utilizem a parte 1 do trabalho para guiá-los. Cada grupo deverá construir um documento que explique ou responda a todos os pontos colocados a seguir, de maneira concisa porém completa. Será avaliado, além do conteúdo, a forma do documento, o qual deverá ser bem escrito, estruturado e ilustrado, se for o caso.
+
+- Considerando os 3 tipos de modelos físicos apresentados em sala de aula, indique aquele mais alinhado com o SD proposto. Justifique.
+- Com relação ao modelo de arquitetura, apresente/responda:
+  - Qual é o paradigma de comunicação pretendido para ser utilizado entre as entidades arquitetônicas?
+  - Qual dos modelos de arquitetura básicos será usado?
+  - Quais são as funções e responsabilidades atribuídas à cada uma das entidades do
+modelo? Responda à essa pergunta utilizando os casos de uso levantados na parte 1 do trabalho.
+  - Há potencial para que o SD seja estruturado em camadas físicas? E em camadas
+lógicas? Em caso afirmativo para cada uma das perguntas, indique como isso
+poderia ser feito.
+- Com relação aos modelos fundamentais (interação, falhas e segurança),
+apresente/responda:
+  - Para o modelo de interação, identifique: (a) no seu SD, qual a importância da
+latência, taxa de transmissão de dados e jitter na interação entre as entidades?; (b)
+o SD utilizará modelo síncrono ou assíncrono? Justifique.
+  - Para o modelo de falhas, considerando uma das 3 classes de falhas estudadas em
+sala de aula ((a) falhas por omissão, (b) falhas arbitrárias e (c) falhas de
+temporização), descreva uma possível falha que poderia atrapalhar o sistema e
+aponte como a mesma poderia ser detectada e tratada.
+  - Para o modelo de segurança, explique se o seu SD necessita de um ou mais
+mecanismos para realizar (a) proteção aos processos e (b) proteção ao canal de
+comunicação.
