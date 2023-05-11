@@ -3,9 +3,9 @@ from pages import login
 import socket
 
 if __name__ == '__main__':
-  server = socket.socket()
-  port = 4000
-  server.connect(('localhost', port))
+  # server = socket.socket()
+  # port = 4000
+  # server.connect(('localhost', port))
 
   main = Tk()
   main.geometry('750x425')
@@ -13,9 +13,9 @@ if __name__ == '__main__':
   main.resizable(width=FALSE, height=FALSE)
 
   # login page
-  loginPage = login.loginPage(main, server=server)
+  loginPage = login.loginPage(main, server=None)
   
   loginPage.start()
   
-  server.close()
+  # server.close()
   

@@ -51,10 +51,10 @@ class Login:
     def submit(self):
         user = self.entryUser.get()
         password = self.entryPassword.get()
-        message = "Submitted Successfully! " + user + " - " + password
-        # messagebox.showinfo("Success", "Submitted Successfully! " + user + " - " + password)
+        # message = "Submitted Successfully! " + user + " - " + password
+        messagebox.showinfo("Success", "Submitted Successfully! " + user + " - " + password)
 
-        self.server.send(message.encode())
+        # self.server.send(message.encode())
 
 def loginPage(root, server):
     return Login(root, server)
