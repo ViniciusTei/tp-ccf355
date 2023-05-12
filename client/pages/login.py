@@ -2,6 +2,8 @@ from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
 
+import api
+
 class Login:
     def  __init__(self, window, server):
         self.window = window
@@ -55,6 +57,10 @@ class Login:
         messagebox.showinfo("Success", "Submitted Successfully! " + user + " - " + password)
 
         # self.server.send(message.encode())
+
+        apiInstance = api.API()
+        response = apiInstance.GET('/user')
+        print('from server', response)
 
 def loginPage(root, server):
     return Login(root, server)
