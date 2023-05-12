@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "-m" , "jurigged", "-v", "client.py"]
+CMD [ "python", "client.py"]

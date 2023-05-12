@@ -1,14 +1,8 @@
-from tkinter import *
-from pages import login
+from app import App
 
 if __name__ == '__main__':
-  main = Tk()
+  main = App()
+  main.title('FindGamers')
   main.geometry('750x425')
-  main.configure(background="#1C1D2C")
-  main.resizable(width=FALSE, height=FALSE)
-
-  # login page
-  loginPage = login.loginPage(main, server=None)
   
-  loginPage.start()
-  
+  main.mainloop()
