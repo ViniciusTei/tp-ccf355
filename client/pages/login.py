@@ -35,7 +35,7 @@ class Login:
         headingFormText.pack(side=TOP)
 
         formFrame = Frame(loginFormFrame, bg="#292C3D")
-        formFrame.pack(fill=BOTH, side=BOTTOM, pady=80)
+        formFrame.pack(fill=BOTH, pady=50)
 
         Label(formFrame, text="Usuário", font="12",bg="#292C3D", fg="#FFFFFF").pack()
         self.entryUser = Entry(formFrame)
@@ -44,7 +44,7 @@ class Login:
         self.entryPassword = Entry(formFrame, show="*")
         self.entryPassword.pack()
 
-        buttonSubmit = Button(formFrame, text="Entrar", command=self.submit, bg="#0D9EF1", fg="#FFFFFF", width=12, height=60)
+        buttonSubmit = Button(formFrame, text="Entrar", command=self.submit, bg="#0D9EF1", fg="#FFFFFF", width=12)
         buttonSubmit.pack(pady=10)
 
         
