@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
+import os
 
 import api
 
@@ -9,8 +10,8 @@ class Login:
         self.window = window
         self.server = server
         ## create background with image and logo
-        logoImage = Image.open("D:\\Documentos\\www\\tp-ccf355\\client\\assets\\Logo.png")
-        ninjaImage = Image.open("D:\\Documentos\\www\\tp-ccf355\\client\\assets\\ninja.png")
+        logoImage = Image.open(os.getcwd() + '/client/assets/' + os.listdir('./client/assets')[0])
+        ninjaImage = Image.open(os.getcwd() + '/client/assets/' + os.listdir('./client/assets')[1])
 
         logo = ImageTk.PhotoImage(logoImage)
         labelLogo = Label(self.window, image=logo, background="#1C1D2C")
@@ -54,7 +55,7 @@ class Login:
         user = self.entryUser.get()
         password = self.entryPassword.get()
         # message = "Submitted Successfully! " + user + " - " + password
-        messagebox.showinfo("Success", "Submitted Successfully! " + user + " - " + password)
+        # messagebox.showinfo("Success", "Submitted Successfully! " + user + " - " + password)
 
         # self.server.send(message.encode())
 
