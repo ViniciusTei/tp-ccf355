@@ -63,6 +63,7 @@ class Login:
         apiInstance = api.API()
         response = apiInstance.POST('/session', payload)
         print('from server', response)
+        messagebox.showinfo('Info', response)
 
 def loginPage(root, server):
     return Login(root, server)
