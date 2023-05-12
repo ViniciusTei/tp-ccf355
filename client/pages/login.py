@@ -54,13 +54,14 @@ class Login:
     def submit(self):
         user = self.entryUser.get()
         password = self.entryPassword.get()
-        # message = "Submitted Successfully! " + user + " - " + password
-        # messagebox.showinfo("Success", "Submitted Successfully! " + user + " - " + password)
-
-        # self.server.send(message.encode())
+        
+        payload = {
+            "username": user,
+            "password": password
+        }
 
         apiInstance = api.API()
-        response = apiInstance.GET('/user')
+        response = apiInstance.POST('/session', payload)
         print('from server', response)
 
 def loginPage(root, server):

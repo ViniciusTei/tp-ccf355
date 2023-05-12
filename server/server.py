@@ -1,4 +1,5 @@
 import socket
+import json
 
 s = socket.socket()
 
@@ -17,7 +18,14 @@ while True:
     data = connection.recv(1024).decode()
     dataSplitted = data.split(';')
     
-    if (dataSplitted[1] == '/user'):
-        connection.send('User connected! Vinicius'.encode())
+    if (dataSplitted[1] == '/session'):
+        payload = json.loads(dataSplitted[2])
+        print('Received from server', payload)
+
+        if (payload['password'] == '123'):
+            response = 'User connected! %s'%(payload['username'])
+            connection.send(response.encode())
+        else:
+            connection.send('User incorrect!'.encode())
     else:
         connection.send('Route not found!'.encode())

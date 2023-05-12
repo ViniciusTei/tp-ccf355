@@ -1,4 +1,5 @@
 import socket
+import json
 
 PORT = 4000
 
@@ -13,15 +14,28 @@ class API:
     def __connect(self, host, port):
         self.sock.connect((host, port))
 
-    def GET(self, url):
-        message = 'GET;' + url
-
+    def __send(self, msg):
         self.__connect('localhost', PORT)
         
-        self.sock.send(message.encode())
+        self.sock.send(msg.encode())
 
         response = self.sock.recv(1024)
         
         self.sock.close()
+
+        return response
+
+    def GET(self, url):
+        message = 'GET;' + url
+
+        response = self.__send(message)
+
+        return response.decode()
+
+    def POST(self, url, dictionary):
+        data = json.dumps(dictionary) 
+        message = 'POST;' + url + ';' + data
+
+        response = self.__send(message)
 
         return response.decode()
