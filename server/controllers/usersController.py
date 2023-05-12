@@ -1,16 +1,11 @@
 import json
 
 from router import STATUS
-
-users = [
-        {
-            "id": 0,
-            "username": "vinicius",
-            "password": "123"
-        }
-    ]
+from models import usersModel
 
 def GetUsers():
+    users = usersModel.getAllUsers()
+
     response = {
         "users": users,
         "status": STATUS['SUCCESS']

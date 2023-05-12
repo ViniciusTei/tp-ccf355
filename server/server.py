@@ -3,6 +3,7 @@ import json
 from _thread import *
 
 from routes import Router
+from db import database
 
 def handle_connection(connection):
     # recebe os dados do cliente, decodifica e splita
@@ -34,7 +35,9 @@ if __name__ == '__main__':
 
     print('Server running on port 4000!')
 
-    # sel.register(s, selectors.EVENT_READ, data=None)
+    databaseConn = database.DB().db
+    users = databaseConn.execute('SELECT * FROM users').fetchall()
+    print('from db', users)
 
     try:
         while True:

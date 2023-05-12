@@ -1,16 +1,11 @@
 import json
 
 from router import STATUS
-
-users = [
-        {
-            "id": 0,
-            "username": "vinicius",
-            "password": "123"
-        }
-    ]
+from models import usersModel
 
 def PostSession(payload):
+    users = usersModel.getAllUsers()
+
     response = {
         'message': 'User incorrect!',
         'status': STATUS['NOTFOUND']
