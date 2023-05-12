@@ -19,18 +19,19 @@ class API:
         
         self.sock.send(msg.encode())
 
+        # espera sempre um json em formato de string do servidor
         response = self.sock.recv(1024)
         
         self.sock.close()
 
-        return response
+        return json.loads(response.decode())
 
     def GET(self, url):
         message = 'GET;' + url
 
         response = self.__send(message)
 
-        return response.decode()
+        return response
 
     def POST(self, url, dictionary):
         data = json.dumps(dictionary) 
@@ -38,4 +39,4 @@ class API:
 
         response = self.__send(message)
 
-        return response.decode()
+        return response
