@@ -3,8 +3,9 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 import os
 
-from api import API
-from pages import HomePage, RegisterPage
+from api import API 
+from .home import HomePage
+from .register import RegisterPage
 
 class LoginPage(Frame):
     def  __init__(self, parent, controller):
