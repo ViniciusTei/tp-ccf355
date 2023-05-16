@@ -4,9 +4,11 @@ from _thread import *
 
 from routes import Router
 
+MAX_BUFF_SIZE = 4096
+
 def handle_connection(connection):
     # recebe os dados do cliente, decodifica e splita
-    data = connection.recv(1024).decode()
+    data = connection.recv(MAX_BUFF_SIZE).decode()
     dataSplitted = data.split(';')
 
     payload = None
