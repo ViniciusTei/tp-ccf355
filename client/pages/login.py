@@ -47,7 +47,7 @@ class LoginPage(Frame):
         buttonSubmit = Button(formFrame, text="Entrar", command=self.__submit, bg="#0D9EF1", fg="#FFFFFF", width=12)
         buttonSubmit.pack(pady=10)
 
-        link = Label(formFrame, text="Criar nova conta", bg="#292C3D", fg="#FFFFFF", cursor="hand2")
+        link = Label(formFrame, text="Criar nova conta", bg="#292C3D", fg="#FFFFFF", cursor="hand2", font=('Roboto 8 underline'))
         link.pack()
         link.bind("<Button-1>", lambda e: self.__controller.showFrame(RegisterPage))
 

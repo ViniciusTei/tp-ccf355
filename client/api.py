@@ -20,13 +20,18 @@ class API:
         self.sock.send(msg.encode())
 
         # espera sempre um json em formato de string do servidor
-        response = self.sock.recv(1024)
+        response = self.sock.recv(4096)
         
         self.sock.close()
 
         return json.loads(response.decode())
 
     def GET(self, url):
+
+        # header = {
+        #     "method": "GET",
+        # }
+
         message = 'GET;' + url
 
         response = self.__send(message)
@@ -34,9 +39,28 @@ class API:
         return response
 
     def POST(self, url, dictionary):
-        data = json.dumps(dictionary) 
+        data = json.dumps(dictionary)
+
+        # header = {
+        #     "method": "POST",
+        #     "content_type": "json",
+        #     "size": len(data)
+        # }
+
+        # enviar header com pre-conteudo para serer
+
+        # enviar conteudo com url
         message = 'POST;' + url + ';' + data
 
+        # espera resposta do servidor para o cliente
         response = self.__send(message)
 
         return response
+    
+    # def UPLOAD(self, file, fileSize):
+        
+    #     header = {
+    #         "method": "POST",
+    #         "content_type": "file",
+    #         "size": fileSize
+    #     }
