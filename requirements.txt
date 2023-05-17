@@ -1,2 +1,2 @@
 Pillow==9.5.0
-jurigged==0.5.4
+requests==2.30.0

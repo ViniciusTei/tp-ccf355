@@ -1,32 +1,8 @@
 import socket
-import json
-from _thread import *
 
-from routes import Router
-
-MAX_BUFF_SIZE = 4096
-
-def handle_connection(connection):
-    # recebe os dados do cliente, decodifica e splita
-    data = connection.recv(MAX_BUFF_SIZE).decode()
-    dataSplitted = data.split(';')
-
-    payload = None
-
-    # cria um payload json se existente
-    if(dataSplitted[2]):
-        payload = json.loads(dataSplitted[2])
-
-    # espera uma resposta em string para enviar para o cliente
-    # a string deve ser sempre um json parseado para string
-    response = Router.run(dataSplitted[0], dataSplitted[1], payload)
-
-    connection.send(response.encode())
-
-    connection.close()
+from connection import Connection
 
 if __name__ == '__main__':
-    numThreads = 0
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     port = 4000
@@ -41,12 +17,15 @@ if __name__ == '__main__':
             connection, addr = s.accept()
 
             print("Accepted a connection request from %s:%s"%(addr[0], addr[1]))
+
+            newConnection = Connection(connection)
+
+            newConnection.start()
             
-            start_new_thread(handle_connection, (connection, ))
-            numThreads += 1
     except KeyboardInterrupt:
         print("Interruption server.")
     finally:
+        s.close()
         exit 
     
     s.close()
