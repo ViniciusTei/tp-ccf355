@@ -2,7 +2,7 @@ import json
 from _thread import *
 import os
 
-from router import Router
+from routes import Router
 
 MAX_BUFF_SIZE = 4096
 
@@ -44,9 +44,9 @@ class Connection:
     data = connection.recv(MAX_BUFF_SIZE).decode()
     dataSplitted = data.split(';')
 
-    connection.send(json.dumps({ 'message': 'Ready to receive file!' }).encode())
-
     if contentType == 'file':
+          connection.send(json.dumps({ 'message': 'Ready to receive file!' }).encode())
+
           payload = json.loads(dataSplitted[2])
 
           buff = b''
@@ -79,7 +79,7 @@ class Connection:
 
     # espera uma resposta em string para enviar para o cliente
     # a string deve ser sempre um json parseado para string
-    response = Router.run(method, url, payload)
+    response = Router.run(method=method, url=url, payload=payload)
 
     connection.send(response.encode())
 

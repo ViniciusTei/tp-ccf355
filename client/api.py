@@ -96,8 +96,6 @@ class API:
             self.__end_connection()
             return header_response
         
-        print(header_response)
-        
         payload = {
             'file_name': 'Logo.png'
         }
@@ -106,8 +104,6 @@ class API:
 
         # espera resposta do servidor para o cliente
         messageResponse = self.__send(message)
-
-        print(messageResponse)
 
         with open(filePath, 'rb') as f:
             while True:
@@ -120,8 +116,6 @@ class API:
         fileResponseBuff = self.__sock.recv(4096)
         
         fileResponse = json.loads(fileResponseBuff.decode())
-        
-        print(fileResponse)
 
         response = self.__send('EOF')
 
