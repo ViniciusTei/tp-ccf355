@@ -5,3 +5,4 @@ Router = RouterClass()
 
 Router.get(url='/users', callback=usersController.GetUsers)
 Router.post(url='/session', callback=sessionController.PostSession)
+# Router.post(url='/upload', callback=uploadController.upload)
