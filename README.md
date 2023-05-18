@@ -41,3 +41,7 @@ e a partida
 Abaixo segue um modelo UML dos casos de uso para o sistema FindGamers.
 
 <img title="Diagrama UML de Casos de Uso" alt="Diagrama UML de Casos de uso" src=".github/casos-uso.drawio.png" style="background: #fff">
+
+## Banco de dados
+
+<img title="Diagrama do modelo relacional do banco" alt="Modelo relacional do banco" src=".github/eer-diagram.png" style="background: #fff">
