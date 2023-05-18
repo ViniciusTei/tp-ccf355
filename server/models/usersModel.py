@@ -3,7 +3,7 @@ from db import database
 def getAllUsers():
     databaseConn = database.DB().db
 
-    usersTupleList = databaseConn.execute('SELECT * FROM users').fetchall()
+    usersTupleList = databaseConn.execute('SELECT * FROM user').fetchall()
     
     databaseConn.close()
 
