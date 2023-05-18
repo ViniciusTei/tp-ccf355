@@ -2,9 +2,12 @@ import json
 
 from router import STATUS
 from models import usersModel
+from models import gameModel
+
 
 def GetUsers():
     users = usersModel.getAllUsers()
+    games = gameModel.getAllGames()
 
     response = {
         "users": users,

@@ -15,5 +15,5 @@ def getAllUsers():
              "username": user[1],
              "password": user[2]
         })
-
+    print(usersList)
     return usersList
