@@ -3,8 +3,9 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 import os
 
+from api import API 
 from components import Input, ImageSelect
-import pages.login
+import pages
 
 class RegisterPage(Frame):
     def  __init__(self, parent, controller):
@@ -63,14 +64,21 @@ class RegisterPage(Frame):
         confirmPassword = self.__entryConfirmPassword.get()
         image = self.__entryUserImage.get()
 
-        payload = {
-            'username': username,
-            'password': password,
-            'image': image
-        }
-
         if password != confirmPassword:
             messagebox.showerror('Erro', 'As senhas precisam ser iguais!')
-            return
+        else:
+            payload = {
+                'username': username,
+                'password': password,
+                'image': image
+            }
+
+            apiInstance = API()
+            response = apiInstance.POST('/users', payload)
+            
+            if (response['status'] == 200):
+                self.__controller.showFrame(pages.home.HomePage)
+            else:
+                messagebox.showerror('Erro', 'Tente novamente mais tarde.')
 
         
