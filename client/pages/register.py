@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import os
 
+from components import Input
 import pages.login
 
 class RegisterPage(Frame):
@@ -36,4 +37,19 @@ class RegisterPage(Frame):
         voltarLink.bind("<Button-1>", lambda e: self.__controller.showFrame(pages.login.LoginPage))
 
         formFrame = Frame(loginFormFrame, bg="#292C3D")
-        formFrame.pack(fill=BOTH, pady=50)
+        formFrame.pack(fill=BOTH, pady=35)
+
+        self.__entryUser = Input(formFrame, label="Usuário")
+        self.__entryUser.frame.grid(row=1, column=0, columnspan=2)
+
+        self.__entryPassword = Input(formFrame, label="Senha", show="*")
+        self.__entryPassword.frame.grid(row=2, column=0, columnspan=2)
+
+        self.__entryConfirmPassword = Input(formFrame, label="Confirmar Senha", show="*")
+        self.__entryConfirmPassword.frame.grid(row=3, column=0, columnspan=2)
+
+        buttonSubmit = Button(formFrame, text="Cadastrar", command=self.__submit, bg="#0D9EF1", fg="#FFFFFF", width=12)
+        buttonSubmit.grid(row=4, column=0, columnspan=2, pady=10)
+
+    def __submit():
+        print("Cadastrar")
