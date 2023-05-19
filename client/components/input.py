@@ -10,5 +10,5 @@ class Input():
 
         pass
     
-    def getValue(self):
+    def get(self):
         return self.__entry.get()
