@@ -19,10 +19,11 @@ class ImageSelect:
         combobox['values'] = ['default.png', 'avatar.png']
         combobox['state'] = 'readonly'
         combobox.pack(side=BOTTOM,padx=5, pady=5)
+        combobox.set('default.png')
         combobox.bind('<<ComboboxSelected>>', self.__onChangeSelect)
         pass
     
-    def get(self):
+    def get(self):      
         return self.__selectedValue.get()
     
     def __onChangeSelect(self, event):

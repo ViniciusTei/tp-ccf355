@@ -1,5 +1,6 @@
 from tkinter import *
 from PIL import ImageTk, Image
+from tkinter import messagebox
 import os
 
 from components import Input, ImageSelect
@@ -41,8 +42,8 @@ class RegisterPage(Frame):
         formFrame.grid_rowconfigure(3, weight=1)
         formFrame.grid_columnconfigure(0, weight=1)
 
-        select = ImageSelect(formFrame)
-        select.frame.grid(row=1, column=1, rowspan=2, padx=10)
+        self.__entryUserImage = ImageSelect(formFrame)
+        self.__entryUserImage.frame.grid(row=1, column=1, rowspan=2, padx=10)
 
         self.__entryUser = Input(formFrame, label="Usuário")
         self.__entryUser.frame.grid(row=1, column=0)
@@ -56,5 +57,20 @@ class RegisterPage(Frame):
         buttonSubmit = Button(formFrame, text="Cadastrar", command=self.__submit, bg="#0D9EF1", fg="#FFFFFF", width=12)
         buttonSubmit.grid(row=4, column=0, columnspan=2, pady=10)
 
-    def __submit():
-        print("Cadastrar")
+    def __submit(self):
+        username = self.__entryUser.get()
+        password = self.__entryPassword.get()
+        confirmPassword = self.__entryConfirmPassword.get()
+        image = self.__entryUserImage.get()
+
+        payload = {
+            'username': username,
+            'password': password,
+            'image': image
+        }
+
+        if password != confirmPassword:
+            messagebox.showerror('Erro', 'As senhas precisam ser iguais!')
+            return
+
+        
