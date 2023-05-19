@@ -17,3 +17,19 @@ def getAllUsers():
         })
 
     return usersList
+
+def createUser(username, password, image):
+    databaseConn = database.DB().db
+
+    cursor = databaseConn.execute('INSERT INTO user (username,password,image) VALUES (?, ?, ?)', (username, password, image,))
+    iduser = cursor.lastrowid
+    databaseConn.commit()
+
+    if iduser == None:
+        return None
+    else:
+        return {
+            'id': iduser,
+            'username': username,
+            'image': image
+        }
