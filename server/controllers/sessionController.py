@@ -5,8 +5,6 @@ from models import usersModel, lobbyModel
 
 def PostSession(payload):
     users = usersModel.getAllUsers()
-    lobbyModel.getAllLobbies()
-
 
     response = {
         'message': 'User incorrect!',
