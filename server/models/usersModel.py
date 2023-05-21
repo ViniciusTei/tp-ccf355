@@ -32,3 +32,17 @@ def createUser(username, password, image):
             'username': username,
             'image': image
         }
+
+def getUserById(id):
+    databaseConn = database.DB().db
+
+    usersTupleList = databaseConn.execute('SELECT * FROM user WHERE iduser = ?', (id,)).fetchone()
+    
+    databaseConn.close()
+
+    userDict = {}
+
+    userDict['id'] = usersTupleList[0] 
+    userDict['username'] = usersTupleList[1]
+    userDict['image'] = usersTupleList[3]
+    return userDict
