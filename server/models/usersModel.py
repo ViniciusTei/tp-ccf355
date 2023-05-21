@@ -15,7 +15,6 @@ def getAllUsers():
              "username": user[1],
              "password": user[2]
         })
-
     return usersList
 
 def createUser(username, password, image):
