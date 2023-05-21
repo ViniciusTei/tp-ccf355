@@ -4,18 +4,23 @@ from models import usersModel
 def getAllLobbies():
     databaseConn = database.DB().db
 
-    lobbiesTupleList = databaseConn.execute('SELECT * FROM lobby AS l ').fetchall()
+    lobbiesTupleList = databaseConn.execute('SELECT * FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser').fetchall()
     
     databaseConn.close()
 
     lobbiesList = []
-    print(lobbiesTupleList)
+    
 
     for lobby in lobbiesTupleList:
+        print(lobby)
         lobbiesList.append({
-             "id": lobby[0],
-             "name": lobby[1]
+             "lobbyid": lobby[0],
+             "lobbyname": lobby[1],
+             "gameid": lobby[2],
+             "iduser": lobby[5],
+             "username": lobby[6],
         })
+    
     
 
 def getLobbiesByName(name):
