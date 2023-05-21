@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from PIL import ImageTk, Image
 import os
 
@@ -22,7 +23,21 @@ class HomePage(Frame):
         
 
     def __handleCreateLobbyButton(self):
-        print('Criar lobby')
+        createLobbyFrame = Frame(self, width=300, height=100, bg="#1C1D2C")
+        createLobbyFrame.place(x=250, y=50)
+        createLobbyFrame.pack_propagate(False)
+        Label(createLobbyFrame, text="Selecione o jogo que deseja", background="#1C1D2C", fg="#FFFFFF", font=('Roboto 12')).pack()
+        selectedValue = StringVar()
+        combobox = ttk.Combobox(createLobbyFrame, textvariable=selectedValue)
+        combobox['values'] = ['Counter Strike']
+        combobox['state'] = 'readonly'
+        combobox.pack(padx=5, pady=5)
+        btnFrame = Frame(createLobbyFrame, bg="#1C1D2C")
+        btnFrame.pack(side=BOTTOM, pady=10)
+        Button(btnFrame, text="Fechar", command=createLobbyFrame.destroy, bg="#0D9EF1", fg="#FFFFFF").grid(row=0, column=0, padx=10)
+        buttonSubmit = Button(btnFrame, text="Criar", command=createLobbyFrame.destroy, bg="#0D9EF1", fg="#FFFFFF")
+        buttonSubmit.grid(row=0, column=1)
+        # combobox.bind('<<ComboboxSelected>>', self.__onChangeSelect)
 
     def __handleEntryLobby(self):
         print('Entrar lobby')
