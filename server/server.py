@@ -23,9 +23,9 @@ if __name__ == '__main__':
             newConnection.start()
             
     except KeyboardInterrupt:
+        s.close()
         print("Interruption server.")
     finally:
-        s.close()
         exit 
     
     s.close()

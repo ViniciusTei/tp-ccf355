@@ -4,6 +4,7 @@ from tkinter import messagebox
 import os
 
 from api import API 
+from components import Input
 from .home import HomePage
 from .register import RegisterPage
 
@@ -14,13 +15,13 @@ class LoginPage(Frame):
         self.__controller = controller
 
         ## create background with image and logo
-        logoImage = Image.open(os.getcwd() + '/client/assets/' + os.listdir('./client/assets')[0])
+        logoImage = Image.open(os.getcwd() + '/client/assets/Logo.png')
         logo = ImageTk.PhotoImage(logoImage)
         labelLogo = Label(self, image=logo, background="#1C1D2C")
         labelLogo.image = logo
         labelLogo.place(x=60, y=45)
 
-        ninjaImage = Image.open(os.getcwd() + '/client/assets/' + os.listdir('./client/assets')[1])
+        ninjaImage = Image.open(os.getcwd() + '/client/assets/ninja.png')
         ninja = ImageTk.PhotoImage(ninjaImage)
         labelNinja = Label(self, image=ninja, background="#1C1D2C")
         labelNinja.image = ninja
@@ -37,12 +38,11 @@ class LoginPage(Frame):
         formFrame = Frame(loginFormFrame, bg="#292C3D")
         formFrame.pack(fill=BOTH, pady=50)
 
-        Label(formFrame, text="Usuário", font="12",bg="#292C3D", fg="#FFFFFF").pack()
-        self.__entryUser = Entry(formFrame)
-        self.__entryUser.pack()
-        Label(formFrame, text="Senha", font="12",bg="#292C3D", fg="#FFFFFF").pack()
-        self.__entryPassword = Entry(formFrame, show="*")
-        self.__entryPassword.pack()
+        self.__entryUser = Input(formFrame, label="Usuário")
+        self.__entryUser.frame.pack()
+
+        self.__entryPassword = Input(formFrame, label="Senha", show="*")
+        self.__entryPassword.frame.pack()
 
         buttonSubmit = Button(formFrame, text="Entrar", command=self.__submit, bg="#0D9EF1", fg="#FFFFFF", width=12)
         buttonSubmit.pack(pady=10)
@@ -66,7 +66,7 @@ class LoginPage(Frame):
         # messagebox.showinfo('Info', response)
 
         if (response['status'] == 200):
-            self.__controller.showFrame(HomePage)
+            self.__controller.showFrame(HomePage, True)
         else:
             messagebox.showerror('Erro', 'Usuário inválido! Tente novamente ou faça um cadastro.')
 
