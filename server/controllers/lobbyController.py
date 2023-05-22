@@ -8,7 +8,7 @@ def GetAllLobbies():
     lobbies = lobbyModel.getAllLobbies()
 
     response = {
-        "users": lobbies,
+        "lobbies": lobbies,
         "status": STATUS['SUCCESS']
     }
 

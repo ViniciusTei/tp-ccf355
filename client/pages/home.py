@@ -3,6 +3,8 @@ from tkinter import ttk
 from PIL import ImageTk, Image
 import os
 
+from api import API 
+
 class HomePage(Frame):
     def  __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -15,6 +17,9 @@ class HomePage(Frame):
         self.__lobiesContainer.place(x=10, y=50)
 
         self.__totalLobbies = 0
+
+        response = API().GET('/lobby')
+        print('lobby', response)
 
         # place lobby
         self.__placeLobby(self.__totalLobbies)
@@ -35,9 +40,12 @@ class HomePage(Frame):
         btnFrame = Frame(createLobbyFrame, bg="#1C1D2C")
         btnFrame.pack(side=BOTTOM, pady=10)
         Button(btnFrame, text="Fechar", command=createLobbyFrame.destroy, bg="#0D9EF1", fg="#FFFFFF").grid(row=0, column=0, padx=10)
-        buttonSubmit = Button(btnFrame, text="Criar", command=createLobbyFrame.destroy, bg="#0D9EF1", fg="#FFFFFF")
+        buttonSubmit = Button(btnFrame, text="Criar", command=self.__createNewLobby, bg="#0D9EF1", fg="#FFFFFF")
         buttonSubmit.grid(row=0, column=1)
         # combobox.bind('<<ComboboxSelected>>', self.__onChangeSelect)
+
+    def __createNewLobby(self):
+        print('criar')
 
     def __handleEntryLobby(self):
         print('Entrar lobby')

@@ -13,6 +13,7 @@ def PostSession(payload):
 
     for user in users:
         if user['username'] == payload['username'] and user['password'] == payload['password']:
+            response['user'] = user
             response['message'] = 'User connected! %s'%(payload['username'])
             response['status'] = STATUS['SUCCESS']
     

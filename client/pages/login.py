@@ -66,6 +66,7 @@ class LoginPage(Frame):
         # messagebox.showinfo('Info', response)
 
         if (response['status'] == 200):
+            self.__controller.user = response['user']
             self.__controller.showFrame(HomePage, True)
         else:
             messagebox.showerror('Erro', 'Usuário inválido! Tente novamente ou faça um cadastro.')

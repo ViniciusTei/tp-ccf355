@@ -8,4 +8,5 @@ Router.post(url='/users', callback=usersController.CreateUser)
 
 Router.post(url='/session', callback=sessionController.PostSession)
 
-Router.post(url='/lobby', callback=lobbyController.GetAllLobbies)
+Router.get(url='/lobby', callback=lobbyController.GetAllLobbies)
+Router.post(url='/lobby', callback=lobbyController.CreateLobby)

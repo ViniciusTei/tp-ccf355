@@ -17,6 +17,8 @@ def getAllLobbies():
              "name": lobby[1]
         })
     
+    return lobbiesList
+    
 
 def getLobbiesByName(name):
     databaseConn = database.DB().db

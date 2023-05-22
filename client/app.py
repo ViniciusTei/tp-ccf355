@@ -12,6 +12,8 @@ from pages import HomePage, LoginPage, RegisterPage
 layouts = (LoginPage, RegisterPage, HomePage)
 
 class App(Tk):
+  user = None
+
   def __init__(self, *args, **kwargs):
     Tk.__init__(self, *args, **kwargs)
 
