@@ -7,9 +7,9 @@ from tkinter import *
 from PIL import ImageTk, Image
 import os
 
-from pages import HomePage, LoginPage, RegisterPage
+from pages import HomePage, LoginPage, RegisterPage, PerfilPage
 
-layouts = (LoginPage, RegisterPage, HomePage)
+layouts = (LoginPage, RegisterPage, HomePage, PerfilPage)
 
 class App(Tk):
   user = None
@@ -45,7 +45,7 @@ class App(Tk):
     
     menuItemProfile = Label(self.__menu, text="Perfil", bg="#1C1D2C", fg="#0D9EF1", cursor="hand2", font=('Roboto 10'))
     menuItemProfile.place(x=640, y=25)
-    menuItemProfile.bind("<Button-1>", lambda e: self.showFrame(HomePage, True))
+    menuItemProfile.bind("<Button-1>", lambda e: self.showFrame(PerfilPage))
     
     menuItemLeave = Label(self.__menu, text="Sair", bg="#1C1D2C", fg="#0D9EF1", cursor="hand2", font=('Roboto 10'))
     menuItemLeave.place(x=700, y=25)
