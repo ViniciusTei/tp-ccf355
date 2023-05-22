@@ -1,5 +1,5 @@
 from router import Router as RouterClass
-from controllers import sessionController, usersController, lobbyController
+from controllers import sessionController, usersController, lobbyController, gamesController
 
 Router = RouterClass()
 
@@ -10,3 +10,5 @@ Router.post(url='/session', callback=sessionController.PostSession)
 
 Router.get(url='/lobby', callback=lobbyController.GetAllLobbies)
 Router.post(url='/lobby', callback=lobbyController.CreateLobby)
+
+Router.get(url='/games', callback=gamesController.GetAllGames)
