@@ -15,16 +15,17 @@ class HomePage(Frame):
 
         buttonSubmit = Button(self, text="Criar lobby", command=self.__handleCreateLobbyButton, bg="#0D9EF1", fg="#FFFFFF", width=12)
         buttonSubmit.place(x=20, y=20)
-
         self.__lobiesContainer = Frame(self, width=730, height=300)
         self.__lobiesContainer.configure(background="#1C1D2C")
-        self.__lobiesContainer.place(x=10, y=50)
-
         self.__totalLobbies = 0
 
     def run(self):
         response = API().GET('/lobby')
         lobbies = response['lobbies']
+        self.__lobiesContainer.destroy()
+        self.__lobiesContainer = Frame(self, width=730, height=300)
+        self.__lobiesContainer.configure(background="#1C1D2C")
+        self.__lobiesContainer.place(x=10, y=50)
         for l in lobbies:
             self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
 
@@ -64,7 +65,6 @@ class HomePage(Frame):
         headingText = Label(lobbyFrame, text=lobbyName, font="16",bg="#292C3D", fg="#FFFFFF")
         headingText.pack(side=TOP, pady=10)
         for idx, user in enumerate(lobbyUsers):
-            print('lobbyUser', idx, user)
             self.__placeUser(lobbyFrame, idx, user)
 
         buttonSubmit = Button(lobbyFrame, text="Entrar", command= lambda: self.__handleEntryLobby(lobbyid), bg="#0D9EF1", fg="#FFFFFF")
