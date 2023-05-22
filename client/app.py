@@ -71,5 +71,8 @@ class App(Tk):
     frame = self.__pages[cont]
     frame.tkraise()
 
+    if hasattr(frame, 'run'):
+      frame.run()
+
   def __placeMenu(self):
     self.__menu.grid(row=0, column=0, sticky="nsew")

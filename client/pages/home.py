@@ -18,14 +18,11 @@ class HomePage(Frame):
 
         self.__totalLobbies = 0
 
+    def run(self):
         response = API().GET('/lobby')
-        print('lobby', response)
-
-        # place lobby
-        self.__placeLobby(self.__totalLobbies)
-        self.__placeLobby(self.__totalLobbies)
-        self.__placeLobby(self.__totalLobbies) 
-        
+        lobbies = response['lobbies']
+        for l in lobbies:
+            self.__placeLobby(self.__totalLobbies, l['lobbyname'], l['users'])
 
     def __handleCreateLobbyButton(self):
         createLobbyFrame = Frame(self, width=300, height=100, bg="#1C1D2C")
@@ -50,18 +47,15 @@ class HomePage(Frame):
     def __handleEntryLobby(self):
         print('Entrar lobby')
 
-    def __placeLobby(self, col):
+    def __placeLobby(self, col, lobbyName, lobbyUsers):
         lobbyFrame = Frame(self.__lobiesContainer, width=158, height=259)
         lobbyFrame.configure(background='#292C3D', highlightbackground="white", highlightthickness=1)
         lobbyFrame.pack_propagate(False)
-        headingText = Label(lobbyFrame, text="Time " + str(col), font="16",bg="#292C3D", fg="#FFFFFF")
+        headingText = Label(lobbyFrame, text=lobbyName, font="16",bg="#292C3D", fg="#FFFFFF")
         headingText.pack(side=TOP, pady=10)
-
-        self.__placeUser(lobbyFrame, 0)
-        self.__placeUser(lobbyFrame, 1)
-        self.__placeUser(lobbyFrame, 2)
-        self.__placeUser(lobbyFrame, 3)
-        self.__placeUser(lobbyFrame, 4)
+        for idx, user in enumerate(lobbyUsers):
+            print('lobbyUser', idx, user)
+            self.__placeUser(lobbyFrame, idx, user)
 
         buttonSubmit = Button(lobbyFrame, text="Entrar", command=self.__handleEntryLobby, bg="#0D9EF1", fg="#FFFFFF")
         buttonSubmit.pack(side=BOTTOM, pady=10)
@@ -70,15 +64,15 @@ class HomePage(Frame):
 
         self.__totalLobbies+=1
 
-    def __placeUser(self, parent, userIndex):
+    def __placeUser(self, parent, userIndex, user):
         userFrame = Frame(parent, background='#292C3D')
-        image = Image.open(os.getcwd() + '/client/assets/user_images/default.png')
+        image = Image.open(os.getcwd() + '/client/assets/user_images/' + user['userimage'])
         image = image.resize((28,28), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(image)
         labelImage = Label(userFrame, image=photo, background='#292C3D')
         labelImage.image=photo
         labelImage.grid(row=0, column=0)
-        userLabel = Label(userFrame, text="Vinicius", background='#292C3D', fg="#FFFFFF")
+        userLabel = Label(userFrame, text=user['username'], background='#292C3D', fg="#FFFFFF")
         userLabel.grid(row=0, column=1)
         userPos = 40 + (userIndex * 35)
         userFrame.place(x=10, y=userPos)

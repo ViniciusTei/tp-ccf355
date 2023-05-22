@@ -4,22 +4,30 @@ from models import usersModel
 def getAllLobbies():
     databaseConn = database.DB().db
 
-    lobbiesTupleList = databaseConn.execute('SELECT * FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser').fetchall()
+    lobbiesTupleList = databaseConn.execute('SELECT idlobby, name, username, image FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser').fetchall()
     
     databaseConn.close()
 
     lobbiesList = []
     
-
     for lobby in lobbiesTupleList:
-        print(lobby)
-        lobbiesList.append({
-             "lobbyid": lobby[0],
-             "lobbyname": lobby[1],
-             "gameid": lobby[2],
-             "iduser": lobby[5],
-             "username": lobby[6],
-        })
+        if not any(d['lobbyid'] == lobby[0] for d in lobbiesList):
+            # does not exist
+            lobbiesList.append({
+                "lobbyid": lobby[0],
+                "lobbyname": lobby[1],
+                "users": [{
+                    "username": lobby[2],
+                    "userimage": lobby[3]
+                }]
+            })
+        else:
+            for l in lobbiesList:
+                if l['lobbyid'] == lobby[0]:
+                    l['users'].append({
+                        "username": lobby[2],
+                        "userimage": lobby[3]
+                    })
     
     return lobbiesList
     
@@ -43,15 +51,14 @@ def getLobbiesByName(name):
 
 def createLobby(userId, gameId):
     user = usersModel.getUserById(userId)
-    print(user)
+
     name = 'TIME_' + user['username']
-    print(name)
 
     databaseConn = database.DB().db
-
     cursor = databaseConn.execute('INSERT INTO lobby (name,game_idgame) VALUES (?, ?)', (name, gameId,))
     idlobby = cursor.lastrowid
-    print(idlobby)
+    # adicionar o criador da lobby nela
+    databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby, user_iduser) VALUES (?, ?) ', (idlobby, userId))
     databaseConn.commit()
 
     return {
