@@ -6,8 +6,12 @@ import os
 from api import API 
 
 class HomePage(Frame):
+    __games = []
+    __selectedGameValue = None
     def  __init__(self, parent, controller):
         Frame.__init__(self, parent)
+
+        self.__controller = controller
 
         buttonSubmit = Button(self, text="Criar lobby", command=self.__handleCreateLobbyButton, bg="#0D9EF1", fg="#FFFFFF", width=12)
         buttonSubmit.place(x=20, y=20)
@@ -25,16 +29,22 @@ class HomePage(Frame):
             self.__placeLobby(self.__totalLobbies, l['lobbyname'], l['users'])
 
     def __handleCreateLobbyButton(self):
-        createLobbyFrame = Frame(self, width=300, height=100, bg="#1C1D2C")
+        response = API().GET('/games')
+        self.__games = response['games']
+        gameValues = []
+        for game in self.__games:
+            gameValues.append(game['name'])
+
+        createLobbyFrame = Frame(self, width=300, height=100, bg='#292C3D', highlightbackground="white", highlightthickness=1)
         createLobbyFrame.place(x=250, y=50)
         createLobbyFrame.pack_propagate(False)
-        Label(createLobbyFrame, text="Selecione o jogo que deseja", background="#1C1D2C", fg="#FFFFFF", font=('Roboto 12')).pack()
-        selectedValue = StringVar()
-        combobox = ttk.Combobox(createLobbyFrame, textvariable=selectedValue)
-        combobox['values'] = ['Counter Strike']
+        Label(createLobbyFrame, text="Selecione o jogo que deseja", background="#292C3D", fg="#FFFFFF", font=('Roboto 12')).pack()
+        self.__selectedGameValue = StringVar()
+        combobox = ttk.Combobox(createLobbyFrame, textvariable=self.__selectedGameValue)
+        combobox['values'] = gameValues
         combobox['state'] = 'readonly'
         combobox.pack(padx=5, pady=5)
-        btnFrame = Frame(createLobbyFrame, bg="#1C1D2C")
+        btnFrame = Frame(createLobbyFrame, bg="#292C3D")
         btnFrame.pack(side=BOTTOM, pady=10)
         Button(btnFrame, text="Fechar", command=createLobbyFrame.destroy, bg="#0D9EF1", fg="#FFFFFF").grid(row=0, column=0, padx=10)
         buttonSubmit = Button(btnFrame, text="Criar", command=self.__createNewLobby, bg="#0D9EF1", fg="#FFFFFF")
@@ -42,7 +52,7 @@ class HomePage(Frame):
         # combobox.bind('<<ComboboxSelected>>', self.__onChangeSelect)
 
     def __createNewLobby(self):
-        print('criar')
+        print('criar', self.__controller.user, self.__selectedGameValue.get())
 
     def __handleEntryLobby(self):
         print('Entrar lobby')
