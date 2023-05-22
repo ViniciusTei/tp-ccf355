@@ -5,7 +5,6 @@ import os
 
 from api import API 
 from components import Input, ImageSelect
-import pages
 
 class RegisterPage(Frame):
     def  __init__(self, parent, controller):
@@ -36,7 +35,7 @@ class RegisterPage(Frame):
 
         voltarLink = Label(loginFormFrame, text="voltar", bg="#292C3D", fg="#FFFFFF", cursor="hand2", font=('Roboto 8 underline'))
         voltarLink.place(y=5)
-        voltarLink.bind("<Button-1>", lambda e: self.__controller.showFrame(pages.login.LoginPage))
+        voltarLink.bind("<Button-1>", lambda e: self.__controller.showFrame('login'))
 
         formFrame = Frame(loginFormFrame, bg="#292C3D")
         formFrame.pack(fill=BOTH, pady=35)
@@ -77,7 +76,7 @@ class RegisterPage(Frame):
             response = apiInstance.POST('/users', payload)
 
             if (response['status'] == 200):
-                self.__controller.showFrame(pages.home.HomePage, True)
+                self.__controller.showFrame('home', True)
             else:
                 messagebox.showerror('Erro', 'Tente novamente mais tarde.')
 

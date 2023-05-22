@@ -5,8 +5,6 @@ import os
 
 from api import API 
 from components import Input
-from .home import HomePage
-from .register import RegisterPage
 
 class LoginPage(Frame):
     def  __init__(self, parent, controller):
@@ -49,7 +47,7 @@ class LoginPage(Frame):
 
         link = Label(formFrame, text="Criar nova conta", bg="#292C3D", fg="#FFFFFF", cursor="hand2", font=('Roboto 8 underline'))
         link.pack()
-        link.bind("<Button-1>", lambda e: self.__controller.showFrame(RegisterPage))
+        link.bind("<Button-1>", lambda e: self.__controller.showFrame('register'))
 
     def __submit(self):
         user = self.__entryUser.get()
@@ -67,7 +65,7 @@ class LoginPage(Frame):
 
         if (response['status'] == 200):
             self.__controller.user = response['user']
-            self.__controller.showFrame(HomePage, True)
+            self.__controller.showFrame('home', True)
         else:
             messagebox.showerror('Erro', 'Usuário inválido! Tente novamente ou faça um cadastro.')
 

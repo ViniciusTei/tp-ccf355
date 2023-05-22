@@ -57,6 +57,6 @@ class PerfilPage(Frame):
         print('from server', response)
 
         if(response['status']==200):
-            self.__controller.showFrame(HomePage, True)
+            self.__controller.showFrame('home', True)
         else:
             messagebox.showerror('Erro','Erro ao alterar os seus dados tente novamente mais tarde')

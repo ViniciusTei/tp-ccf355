@@ -26,7 +26,7 @@ class HomePage(Frame):
         response = API().GET('/lobby')
         lobbies = response['lobbies']
         for l in lobbies:
-            self.__placeLobby(self.__totalLobbies, l['lobbyname'], l['users'])
+            self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
 
     def __handleCreateLobbyButton(self):
         response = API().GET('/games')
@@ -54,10 +54,10 @@ class HomePage(Frame):
     def __createNewLobby(self):
         print('criar', self.__controller.user, self.__selectedGameValue.get())
 
-    def __handleEntryLobby(self):
-        print('Entrar lobby')
+    def __handleEntryLobby(self, lobbyid):
+        self.__controller.showFrame('lobby', True, {'lobbyid': lobbyid})
 
-    def __placeLobby(self, col, lobbyName, lobbyUsers):
+    def __placeLobby(self, col, lobbyid, lobbyName, lobbyUsers):
         lobbyFrame = Frame(self.__lobiesContainer, width=158, height=259)
         lobbyFrame.configure(background='#292C3D', highlightbackground="white", highlightthickness=1)
         lobbyFrame.pack_propagate(False)
@@ -67,7 +67,7 @@ class HomePage(Frame):
             print('lobbyUser', idx, user)
             self.__placeUser(lobbyFrame, idx, user)
 
-        buttonSubmit = Button(lobbyFrame, text="Entrar", command=self.__handleEntryLobby, bg="#0D9EF1", fg="#FFFFFF")
+        buttonSubmit = Button(lobbyFrame, text="Entrar", command= lambda: self.__handleEntryLobby(lobbyid), bg="#0D9EF1", fg="#FFFFFF")
         buttonSubmit.pack(side=BOTTOM, pady=10)
 
         lobbyFrame.grid(row=0, column=col, pady=20, padx=10, ipadx=10, ipady=5)

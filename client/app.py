@@ -7,9 +7,17 @@ from tkinter import *
 from PIL import ImageTk, Image
 import os
 
-from pages import HomePage, LoginPage, RegisterPage, PerfilPage
+from pages import HomePage, LoginPage, RegisterPage, PerfilPage, LobbyPage
 
-layouts = (LoginPage, RegisterPage, HomePage, PerfilPage)
+layouts = (LoginPage, RegisterPage, HomePage, PerfilPage, LobbyPage)
+
+map_layouts = {
+  'login': LoginPage,
+  'register': RegisterPage,
+  'home': HomePage,
+  'perfil': PerfilPage,
+  'lobby': LobbyPage
+}
 
 class App(Tk):
   user = None
@@ -37,19 +45,19 @@ class App(Tk):
 
     menuItemHome = Label(self.__menu, text="Inicio", bg="#1C1D2C", fg="#0D9EF1", cursor="hand2", font=('Roboto 10'))
     menuItemHome.place(x=500, y=25)
-    menuItemHome.bind("<Button-1>", lambda e: self.showFrame(HomePage, True))
+    menuItemHome.bind("<Button-1>", lambda e: self.showFrame('home', True))
     
     menuItemHistory = Label(self.__menu, text="Histórico", bg="#1C1D2C", fg="#0D9EF1", cursor="hand2", font=('Roboto 10'))
     menuItemHistory.place(x=560, y=25)
-    menuItemHistory.bind("<Button-1>", lambda e: self.showFrame(HomePage, True))
+    menuItemHistory.bind("<Button-1>", lambda e: self.showFrame('home', True))
     
     menuItemProfile = Label(self.__menu, text="Perfil", bg="#1C1D2C", fg="#0D9EF1", cursor="hand2", font=('Roboto 10'))
     menuItemProfile.place(x=640, y=25)
-    menuItemProfile.bind("<Button-1>", lambda e: self.showFrame(PerfilPage))
+    menuItemProfile.bind("<Button-1>", lambda e: self.showFrame('perfil', True))
     
     menuItemLeave = Label(self.__menu, text="Sair", bg="#1C1D2C", fg="#0D9EF1", cursor="hand2", font=('Roboto 10'))
     menuItemLeave.place(x=700, y=25)
-    menuItemLeave.bind("<Button-1>", lambda e: self.showFrame(LoginPage))
+    menuItemLeave.bind("<Button-1>", lambda e: self.showFrame('login'))
 
     self.__pages = {}
 
@@ -60,19 +68,28 @@ class App(Tk):
 
       frame.grid(row=1, column=0, sticky="nsew")
 
-    self.showFrame(LoginPage)
+    self.showFrame('login')
 
-  def showFrame(self, cont, showMenu=False):
+  def showFrame(self, cont, showMenu=False, pageParams=None):
     if showMenu:
       self.__placeMenu()
     else:
       self.__menu.grid_remove()
+    
+    if cont not in map_layouts.keys():
+      print('Page not found!')
+      return
 
-    frame = self.__pages[cont]
+    layout = map_layouts[cont]
+
+    frame = self.__pages[layout]
     frame.tkraise()
 
     if hasattr(frame, 'run'):
-      frame.run()
+      if pageParams:
+        frame.run(pageParams)
+      else:
+        frame.run()
 
   def __placeMenu(self):
     self.__menu.grid(row=0, column=0, sticky="nsew")
