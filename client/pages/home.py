@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from PIL import ImageTk, Image
 import os
 
@@ -56,7 +57,12 @@ class HomePage(Frame):
         print('criar', self.__controller.user, self.__selectedGameValue.get())
 
     def __handleEntryLobby(self, lobbyid):
-        self.__controller.showFrame('lobby', True, {'lobbyid': lobbyid})
+        response = API().POST('/lobby-enter', {'lobbyid': lobbyid, 'userid': self.__controller.user['id']})
+
+        if response['status'] == 200:
+            self.__controller.showFrame('lobby', True, {'lobbyid': lobbyid})
+        else:
+            messagebox.showerror('Erro', response['message'])
 
     def __placeLobby(self, col, lobbyid, lobbyName, lobbyUsers):
         lobbyFrame = Frame(self.__lobiesContainer, width=158, height=259)

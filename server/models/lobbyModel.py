@@ -84,3 +84,21 @@ def createLobby(userId, gameId):
             'lobbyId': idlobby,
             'lobbyName': name
         }
+
+def enterLobby(lobbyid, userid):
+    databaseConn = database.DB().db
+    cursor = databaseConn.execute('SELECT idlobby, count(iduser) FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser WHERE l.idlobby=? GROUP by l.idlobby', (lobbyid,))
+    responseTuple = cursor.fetchone()
+    count = responseTuple[1]
+
+    if count >= 5:
+        return {
+            'message': 'Lobby full!'
+        }
+    
+    databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby, user_iduser) VALUES (?, ?) ', (lobbyid, userid))
+    databaseConn.commit()
+
+    return {
+        'message': 'Success!'
+    }
