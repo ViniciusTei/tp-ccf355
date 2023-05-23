@@ -4,11 +4,12 @@ from models import usersModel
 def getAllLobbies():
     databaseConn = database.DB().db
 
-    lobbiesTupleList = databaseConn.execute('SELECT * FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser').fetchall()
+    lobbiesTupleList = databaseConn.execute('SELECT * FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser ORDER BY l.idlobby').fetchall()
     
     databaseConn.close()
 
     lobbiesList = []
+    print(lobbiesTupleList)
     
 
     for lobby in lobbiesTupleList:
@@ -20,7 +21,7 @@ def getAllLobbies():
              "iduser": lobby[5],
              "username": lobby[6],
         })
-    
+    return lobbiesList
     
 
 def getLobbiesByName(name):
@@ -47,12 +48,40 @@ def createLobby(userId, gameId):
 
     databaseConn = database.DB().db
 
-    cursor = databaseConn.execute('INSERT INTO lobby (name,game_idgame) VALUES (?, ?)', (name, gameId,))
+    cursor = databaseConn.execute('INSERT INTO lobby (name,gameid) VALUES (?, ?)', (name, gameId,))
     idlobby = cursor.lastrowid
     print(idlobby)
     databaseConn.commit()
-
+    databaseConn.close()
+    lobbyhasuser = joinLobby(idlobby, userId)
+    print(lobbyhasuser)
     return {
             'lobbyId': idlobby,
-            'lobbyName': name
+            'lobbyName': name,
+            'userId': lobbyhasuser['userId']
         }
+
+def joinLobby(lobbyId, userId):
+    databaseConn = database.DB().db
+
+    databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby,user_iduser) VALUES (?, ?)', (lobbyId, userId,))
+    databaseConn.commit()
+    databaseConn.close()
+    return {
+            'userId': userId
+        }
+
+def exitLobby(lobbyId, userId):
+    databaseConn = database.DB().db
+
+    databaseConn.execute('DELETE FROM lobby_has_user WHERE lobby_idlobby = ? AND user_iduser = ?', (lobbyId, userId,))
+    databaseConn.commit()
+    databaseConn.close()
+
+def deleteLobby(lobbyId):
+    databaseConn = database.DB().db
+
+    databaseConn.execute('DELETE FROM lobby AS l WHERE idlobby = ?', (lobbyId,))
+    databaseConn.commit()
+    databaseConn.close()
+
