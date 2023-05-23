@@ -32,7 +32,7 @@ def CreateUser(payload):
     return json.dumps(response)
 
 def UpdateUser(payload):
-    user = usersModel.updateUser(iduser=payload['iduser'], image=payload['image'])
+    user = usersModel.updateUser(iduser=payload['iduser'], username=payload['username'], password=payload['password'], image=payload['image'])
 
     if user:
         response = {
