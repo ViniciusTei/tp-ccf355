@@ -30,3 +30,16 @@ def CreateUser(payload):
         response = Error(message='Erro ao criar usuario', status=500)
 
     return json.dumps(response)
+
+def UpdateUser(payload):
+    user = usersModel.updateUser(iduser=payload['iduser'], image=payload['image'])
+
+    if user:
+        response = {
+            "user": user,
+            "status": STATUS['SUCCESS']
+        }
+    else:
+        response = Error(message='Erro ao criar usuario', status=500)
+
+    return json.dumps(response)

@@ -46,3 +46,17 @@ def getUserById(id):
     userDict['username'] = usersTupleList[1]
     userDict['image'] = usersTupleList[3]
     return userDict
+
+def updateUser(iduser, username, password , image):
+    databaseConn = database.DB().db
+
+    databaseConn.execute('UPDATE user SET image = ? WHERE iduser = ?', (image, iduser,))
+    databaseConn.commit()
+
+    if iduser == None:
+        return None
+    else:
+        return {
+            'id': iduser,
+            'image': image
+        }

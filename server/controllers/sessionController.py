@@ -1,7 +1,7 @@
 import json
 
 from router import STATUS
-from models import usersModel, lobbyModel
+from models import usersModel
 
 def PostSession(payload):
     users = usersModel.getAllUsers()
