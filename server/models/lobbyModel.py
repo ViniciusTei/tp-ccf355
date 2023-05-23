@@ -31,7 +31,26 @@ def getAllLobbies():
     
     return lobbiesList
     
+def getLobbyById(id):
+    databaseConn = database.DB().db
+
+    lobbiesTupleList = databaseConn.execute('SELECT idlobby, name, username, image FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser WHERE l.idlobby=?', (id,)).fetchall()
     
+    databaseConn.close()
+
+    lobbyDict = {}
+    lobbyDict['lobbyid'] = lobbiesTupleList[0][0] 
+    lobbyDict['lobbyname'] = lobbiesTupleList[0][1]
+    lobbyDict['users'] = []
+
+    for lobby in lobbiesTupleList:
+        print(lobby[2])
+        lobbyDict['users'].append({
+            "username": lobby[2],
+            "userimage": lobby[3]
+        })
+
+    return lobbyDict
 
 def getLobbiesByName(name):
     databaseConn = database.DB().db

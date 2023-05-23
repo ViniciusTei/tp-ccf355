@@ -29,3 +29,16 @@ def CreateLobby(payload):
         response = Error(message='Erro ao criar lobby', status=500)
 
     return json.dumps(response)
+
+def GetLobbyById(payload):
+    lobby = lobbyModel.getLobbyById(id=payload['lobbyid'])
+
+    if lobby:
+        response = {
+            "lobby": lobby,
+            "status": STATUS['SUCCESS']
+        }
+    else:
+        response = Error(message='Erro ao criar lobby', status=500)
+
+    return json.dumps(response)
