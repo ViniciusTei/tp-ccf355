@@ -4,7 +4,7 @@ from models import usersModel
 def getAllLobbies():
     databaseConn = database.DB().db
 
-    lobbiesTupleList = databaseConn.execute('SELECT idlobby, name, username, image FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser').fetchall()
+    lobbiesTupleList = databaseConn.execute('SELECT idlobby, name, username, image FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser ORDER BY l.idlobby').fetchall()
     
     databaseConn.close()
 
