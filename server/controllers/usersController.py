@@ -6,7 +6,6 @@ from error import Error
 
 def GetUsers():
     users = usersModel.getAllUsers()
-    games = gameModel.getAllGames()
 
     response = {
         "users": users,
