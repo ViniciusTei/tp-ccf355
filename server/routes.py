@@ -12,5 +12,6 @@ Router.get(url='/lobby', callback=lobbyController.GetAllLobbies)
 Router.post(url='/lobby', callback=lobbyController.CreateLobby)
 Router.post(url='/lobby-by-id', callback=lobbyController.GetLobbyById)
 Router.post(url='/lobby-enter', callback=lobbyController.EnterLobby)
+Router.post(url='/lobby-leave', callback=lobbyController.LeaveLobby)
 
 Router.get(url='/games', callback=gamesController.GetAllGames)

@@ -51,3 +51,11 @@ def EnterLobby(payload):
         return json.dumps(response)
     else:
         return json.dumps(Error(message=response['message'], status=STATUS['ERROR']))
+    
+def LeaveLobby(payload):
+    lobbyModel.LeaveLobby(lobbyid=payload['lobbyid'], userid=payload['userid'])
+    response = {
+        "message": "Ok",
+        "status": STATUS['SUCCESS']
+    }
+    return json.dumps(response)
