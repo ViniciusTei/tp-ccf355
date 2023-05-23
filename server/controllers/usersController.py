@@ -40,6 +40,6 @@ def UpdateUser(payload):
             "status": STATUS['SUCCESS']
         }
     else:
-        response = Error(message='Erro ao criar usuario', status=500)
+        response = Error(message='Erro ao editar usuario', status=500)
 
     return json.dumps(response)
