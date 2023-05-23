@@ -5,7 +5,6 @@ import os
 
 from api import API 
 from components import Input, ImageSelect
-import pages
 
 class PerfilPage(Frame):
     def __init__(self, parent, controller):
@@ -22,7 +21,7 @@ class PerfilPage(Frame):
 
         voltarLink = Label(loginFormFrame, text="voltar", bg="#292C3D", fg="#FFFFFF", cursor="hand2", font=('Roboto 8 underline'))
         voltarLink.place(y=5)
-        voltarLink.bind("<Button-1>", lambda e: self.__controller.showFrame(pages.home.HomePage, True))
+        voltarLink.bind("<Button-1>", lambda e: self.__controller.showFrame('home', True))
 
         formFrame = Frame(loginFormFrame, bg="#292C3D")
         formFrame.pack(fill=BOTH, pady=35)
