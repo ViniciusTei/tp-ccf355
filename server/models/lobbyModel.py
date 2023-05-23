@@ -44,7 +44,6 @@ def getLobbyById(id):
     lobbyDict['users'] = []
 
     for lobby in lobbiesTupleList:
-        print(lobby[2])
         lobbyDict['users'].append({
             "username": lobby[2],
             "userimage": lobby[3]
@@ -56,7 +55,6 @@ def getLobbiesByName(name):
     databaseConn = database.DB().db
 
     lobbiesTupleList = databaseConn.execute('SELECT * FROM lobby WHERE name = ?', (name,)).fetchone()
-    print(lobbiesTupleList)
     
     databaseConn.close()
 
@@ -74,7 +72,7 @@ def createLobby(userId, gameId):
     name = 'TIME_' + user['username']
 
     databaseConn = database.DB().db
-    cursor = databaseConn.execute('INSERT INTO lobby (name,game_idgame) VALUES (?, ?)', (name, gameId,))
+    cursor = databaseConn.execute('INSERT INTO lobby (name,gameid) VALUES (?, ?)', (name, gameId,))
     idlobby = cursor.lastrowid
     # adicionar o criador da lobby nela
     databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby, user_iduser) VALUES (?, ?) ', (idlobby, userId))

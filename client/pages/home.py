@@ -54,7 +54,18 @@ class HomePage(Frame):
         # combobox.bind('<<ComboboxSelected>>', self.__onChangeSelect)
 
     def __createNewLobby(self):
-        print('criar', self.__controller.user, self.__selectedGameValue.get())
+        for g in self.__games:
+            if self.__selectedGameValue.get() == g['name']:
+                gameId = g['id']
+        
+        response = API().POST('/lobby', {'userId': self.__controller.user['id'], 'gameId': gameId})
+
+        if response['status'] == 200:
+            self.__controller.showFrame('lobby', True, {'lobbyid': response['lobby']['lobbyId']})
+        else:
+            messagebox.showerror('Erro', response['message'])
+
+        #print('criar', self.__controller.user, self.__selectedGameValue.get())
 
     def __handleEntryLobby(self, lobbyid):
         response = API().POST('/lobby-enter', {'lobbyid': lobbyid, 'userid': self.__controller.user['id']})

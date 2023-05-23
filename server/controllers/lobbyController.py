@@ -18,11 +18,11 @@ def GetAllLobbies():
 
 
 def CreateLobby(payload):
-    lobby = lobbyModel.createLobby(username=payload['userId'], password=payload['gameId'])
+    lobby = lobbyModel.createLobby(payload['userId'], payload['gameId'])
 
     if lobby:
         response = {
-            "lobbyName": lobby['name'],
+            "lobby": lobby,
             "status": STATUS['SUCCESS']
         }
     else:
