@@ -1,47 +1,89 @@
-# Rede Social - FindGamers
+# FindGamers
 
-> **Grupo**: Vinicius Teixeira, Matheus Silva, Jhonatan Lopes
+<!---Esses são exemplos. Veja https://shields.io para outras pessoas ou para personalizar este conjunto de escudos. Você pode querer incluir dependências, status do projeto e informações de licença aqui--->
 
-Neste repositório apresentamos um sistema para jogadores que desejam jogar partidas em equipe de forma organizada e competitiva chamado FindGamers.
-O sistema permite que os jogadores criem grupos ou se juntem a grupos existentes e, quando o grupo estiver completo com cinco membros, possam selecionar outros grupos para jogar uma partida. O sistema tamb´em oferece maneiras para que os jogadores possam se comunicar e planejar suas
-estrat´egias antes da partida.
+![GitHub repo size](https://img.shields.io/github/repo-size/ViniciusTei/tp-ccf355?style=for-the-badge)
 
-O objetivo do sistema ´e fornecer aos jogadores uma maneira f´acil e eficiente de encontrar jogos competitivos, al´em de promover uma experiˆencia de jogo mais organizada e colaborativa. Com o sistema, os jogadores podem se concentrar na estrat´egia e no desempenho da equipe, em vez de gastar tempo procurando por outros jogadores para formar uma equipe.
+<img src=".github/findgamers.png" alt="exemplo imagem">
 
-Este artigo descreve os requisitos funcionais mais importantes para o sistema e apresenta um diagrama UML dos casos de uso do sistema. Ele pode ser usado como uma referˆencia para o desenvolvimento do sistema e para garantir que todos os requisitos funcionais sejam abordados de forma adequad
+> Um sistema para jogadores que desejam jogar partidas em equipe de forma organizada e competitiva.
 
-## Requisitos funcionais 
+### Descrição
 
-Para atingir o objetivo do sistema listamos os principais requisitos funcionais para que o sistema funcione de maneira objetiva e eficiente. S˜ao
-eles:
+Um projeto que utiliza a conexão TCP e a api de Sockets do python para criar um sistema com arquitetura cliente-servidor. O sistema permite que os jogadores criem grupos ou se juntem a grupos existentes e, quando o grupo estiver completo com cinco membros, possam selecionar outros grupos para jogar uma partida.
 
-1. Cadastro de jogadores: permitir que os jogadores se cadastrem no sistema, fornecendo informa¸c˜oes como nome de usu´ario, senha, e-mail e
-outras informa¸c˜oes relevantes.
-2. Cria¸c˜ao de grupos: permitir que os jogadores criem seus pr´oprios grupos, o nome do grupo ´e difinido como ’time nome do criador’, ex.: time
-Matheus.
-3. Entrar em grupos: permitir que os jogadores encontrem e entrem em
-grupos existentes.
-4. Convite de jogadores: permitir que os membros do grupo convidem
-outros jogadores para se juntarem ao grupo.
-5. Formação de partidas: quando o grupo estiver completo, pode desafiar
-outros grupos para criarem uma partida
-6. Seleção de jogo: permitir que o grupo escolha o jogo.
-7. Seleção de modo de jogo: permitir que o grupo escolha o modo de jogo
-e o mapa da partida.
-8. Chat do grupo: permitir que os membros do grupo se comuniquem
-entre si, planejando estrat´egias e discutindo t´aticas.
-9. Conclus˜ao da partida: permitir que a partida seja conclu´ıda e que os
-resultados sejam mostrados na plataforma, permitindo a an´alise das
-estat´ısticas de desempenho dos jogadores.
-10. Feedback: permitir que os jogadores forne¸cam feedback sobre jogadores
-e a partida
 
-## Casos de uso
+## 💻 Pré-requisitos
 
-Abaixo segue um modelo UML dos casos de uso para o sistema FindGamers.
+Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
-<img title="Diagrama UML de Casos de Uso" alt="Diagrama UML de Casos de uso" src=".github/casos-uso.drawio.png" style="background: #fff">
+* Python 3
 
-## Banco de dados
+## 🚀 Instalando Dependências
 
-<img title="Diagrama do modelo relacional do banco" alt="Modelo relacional do banco" src=".github/eer-diagram.png" style="background: #fff">
+Para instalar as dependências e deixar o computador pronto para executar o programa, siga estas etapas:
+
+Linux e macOS:
+```
+python -m venv venv
+chmod +x venv/bin/activate
+./venv/bin/activate
+pip install -r requirements.txt
+```
+
+Windows:
+```
+python -m venv venv
+./venv/Scripts/Activate
+pip install -r requirements.txt
+```
+
+## ☕ Usando FindGamers
+
+Para usar o projeto, siga estas etapas abaixo: 
+
+Em um terminal abra no caminho do arquivo [Makefile](./Makefile) e digite o comando a seguir para iniciar o servidor:
+```
+make run_server
+```
+
+Em um outro terminal, também no caminho do arquivo [Makefile](./Makefile), digite o comando a seguir para executar o client. É importante que o servidor já esteja rodando para o client funcionar corretamente.
+```
+make run_client
+```
+
+O exemplo acima considera que você esteja em uma máquina linux, para mais instruções veja no arquivo [INSTRUÇÃO](./docs/INSTRUCAO.md).
+
+## 🤝 Colaboradores
+
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="#">
+        <img src="https://github.com/ViniciusTei.png" width="100px;" alt="Foto do ViniciusTei"/><br>
+        <sub>
+          <b>Vinicius Teixeira</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="#">
+        <img src="https://github.com/CrownKing.png" width="100px;" alt="Foto do CrownKing"/><br>
+        <sub>
+          <b>Jonathan Lopes</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="#">
+        <img src="https://github.com/buMatheus.png" width="100px;" alt="Foto do buMatheus"/><br>
+        <sub>
+          <b>Matheus da Silva Alves</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
+[⬆ Voltar ao topo](#FindGamers)<br> 

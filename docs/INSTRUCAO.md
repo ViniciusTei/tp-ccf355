@@ -11,7 +11,7 @@ Nele são executados os comandos que vão criar o ambiente virtual, instalar as 
 
 Para executar você precisa iniciar o servidor e o cliente separadamente. Pode fazer isso de forma manual executando os arquivo [server.py](server/server.py), e o arquivo [client.py](client/client.py). Sem esquecer de ativar o ambiente virtual e instalar o arquivo requirements.txt.
 
-Mas para facilitar, podemos apenas utilizar a ferramenta make para executar os processos. Basta usar ```make run_server``` e ```make run_client``` em terminais diferentes.
+Mas para facilitar, no linux, podemos apenas utilizar a ferramenta make para executar os processos. Basta usar ```make run_server``` e ```make run_client``` em terminais diferentes.
 
 #### Problemas
 
