@@ -74,9 +74,10 @@ def createLobby(userId, gameId):
     databaseConn = database.DB().db
     cursor = databaseConn.execute('INSERT INTO lobby (name,gameid) VALUES (?, ?)', (name, gameId,))
     idlobby = cursor.lastrowid
-    # adicionar o criador da lobby nela
     databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby, user_iduser) VALUES (?, ?) ', (idlobby, userId))
     databaseConn.commit()
+    # adicionar o criador da lobby nela
+    enterLobby(idlobby,gameId)
 
     return {
             'lobbyId': idlobby,
