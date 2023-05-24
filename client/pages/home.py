@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from PIL import ImageTk, Image
+import threading
+import time
 import os
 
 from api import API 
@@ -21,14 +23,20 @@ class HomePage(Frame):
         self.__totalLobbies = 0
 
     def run(self):
-        response = API().GET('/lobby')
-        lobbies = response['lobbies']
-        self.__lobiesContainer.destroy()
-        self.__lobiesContainer = Frame(self, width=730, height=300)
-        self.__lobiesContainer.configure(background="#1C1D2C")
-        self.__lobiesContainer.place(x=10, y=50)
-        for l in lobbies:
-            self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
+        t = threading.Thread(target=self.__fetchLobbies)
+        t.start()
+
+    def __fetchLobbies(self):
+        while True:
+            response = API().GET('/lobby')
+            lobbies = response['lobbies']
+            self.__lobiesContainer.destroy()
+            self.__lobiesContainer = Frame(self, width=730, height=300)
+            self.__lobiesContainer.configure(background="#1C1D2C")
+            self.__lobiesContainer.place(x=10, y=50)
+            for l in lobbies:
+                self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
+            time.sleep(10)
 
     def __handleCreateLobbyButton(self):
         response = API().GET('/games')
