@@ -105,11 +105,23 @@ def LeaveLobby(lobbyid, userid):
     databaseConn.execute('DELETE FROM lobby_has_user as lhu WHERE lhu.user_iduser = ? and lhu.lobby_idlobby = ?', (userid, lobbyid,))
     databaseConn.commit()
 
-    cursor = databaseConn.execute('SELECT idlobby, count(iduser) FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser WHERE l.idlobby=? GROUP by l.idlobby', (lobbyid,))
+    cursor = databaseConn.execute('SELECT idlobby, count(iduser) FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u WHERE l.idlobby=? GROUP by l.idlobby', (lobbyid,))
     responseTuple = cursor.fetchone()
+    
+    if responseTuple == None:
+        databaseConn.execute('DELETE FROM lobby as l WHERE l.idlobby = ?', (lobbyid,))
+        databaseConn.commit()
+        return {
+            'message': 'Success!'
+        }
+    
     count = responseTuple[1]
 
     # apaga a lobby se nao tem mais ninguem nela
     if count == 0:
         databaseConn.execute('DELETE FROM lobby as l WHERE l.idlobby = ?', (lobbyid,))
         databaseConn.commit()
+        return {
+            'message': 'Success!'
+        }
+    
