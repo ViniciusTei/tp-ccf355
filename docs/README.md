@@ -48,6 +48,4 @@ Abaixo segue um modelo UML dos casos de uso para o sistema FindGamers.
 
 ## Design
 
-```figma
-https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2Fuiq7AoFEnktqLuJ5OGgFrZ%2FFindGamers---Trabalho-SD%3Ftype%3Ddesign%26node-id%3D0%253A1%26t%3DeDVr9yBLmyQPUY5y-1
-```
+O portótipo pode ser encontrado no link do [Figma](https://www.figma.com/file/uiq7AoFEnktqLuJ5OGgFrZ/FindGamers---Trabalho-SD?type=design&node-id=0%3A1&t=eDVr9yBLmyQPUY5y-1)
