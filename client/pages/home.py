@@ -10,6 +10,9 @@ class HomePage(Frame):
     __games = []
     __selectedGameValue = None
     __lobbies = []
+    __currentPage = 0
+    __totalPages = 0
+    
     def  __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
@@ -28,7 +31,7 @@ class HomePage(Frame):
         imageBackArrow = Label(self, image=photoBack, bg="#474C6B", cursor= "hand2")
         imageBackArrow.image=photoBack
         imageBackArrow.pack(side=LEFT, padx=10)
-        imageBackArrow.bind('<Button-1>', lambda e: print('Hello back'))
+        imageBackArrow.bind('<Button-1>', lambda e: self.__handleBack)
 
         image = Image.open(os.getcwd() + '/client/assets/next.png')
         image = image.resize((16,16), Image.ANTIALIAS)
@@ -36,12 +39,15 @@ class HomePage(Frame):
         imageNextArrow = Label(self, image=photo, bg="#474C6B", cursor= "hand2")
         imageNextArrow.image=photo
         imageNextArrow.pack(side=RIGHT, padx=10)
-        imageNextArrow.bind('<Button-1>', lambda e: print('Hello next'))
+        imageNextArrow.bind('<Button-1>', lambda e: self.__handleNext)
 
     def run(self):
-        response = API().GET('/lobby')
+        response = API().POST('/lobby-by-page', {'page': self.__currentPage})
         lobbies = response['lobbies']
-
+        print(response)
+        self.__currentPage = response['current_page']
+        self.__totalPages = response['total_pages']
+        
         for l in self.__lobbies:
             l.destroy()
 
@@ -49,6 +55,28 @@ class HomePage(Frame):
             self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
        
         self.__placeLobby(self.__totalLobbies, lobbies[0]['lobbyid'], lobbies[0]['lobbyname'], lobbies[0]['users'])
+
+    def __handleNext(self):
+        if (self.__currentPage < self.__totalPages):
+            self.__currentPage += 1
+            self.__fetchAndPlaceLobbies()
+
+    def __handleBack(self):
+        if (self.__currentPage < 0):
+            self.__currentPage -= 1
+            self.__fetchAndPlaceLobbies()
+            
+    
+    def __fetchAndPlaceLobbies(self):
+        response = API().POST('/lobby-by-page', {'page': self.__currentPage})
+        lobbies = response['lobbies']
+
+        for l in self.__lobbies:
+            l.destroy()
+
+        for l in lobbies:
+            self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
+
 
     def __handleCreateLobbyButton(self):
         response = API().GET('/games')
