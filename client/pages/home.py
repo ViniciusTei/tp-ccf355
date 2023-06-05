@@ -9,26 +9,74 @@ from api import API
 class HomePage(Frame):
     __games = []
     __selectedGameValue = None
+    __lobbies = []
+    __currentPage = 0
+    __totalPages = 0
+    
     def  __init__(self, parent, controller):
         Frame.__init__(self, parent)
 
         self.__controller = controller
 
         buttonSubmit = Button(self, text="Criar lobby", command=self.__handleCreateLobbyButton, bg="#0D9EF1", fg="#FFFFFF", width=12)
-        buttonSubmit.place(x=20, y=20)
+        buttonSubmit.place(x=25, y=20)
         self.__lobiesContainer = Frame(self, width=730, height=300)
         self.__lobiesContainer.configure(background="#1C1D2C")
+        self.__lobiesContainer.place(x=25, y=50)
         self.__totalLobbies = 0
 
+        imageBack = Image.open(os.getcwd() + '/client/assets/back.png')
+        imageBack = imageBack.resize((16,16), Image.ANTIALIAS)
+        photoBack = ImageTk.PhotoImage(imageBack)
+        imageBackArrow = Label(self, image=photoBack, bg="#474C6B", cursor= "hand2")
+        imageBackArrow.image=photoBack
+        imageBackArrow.pack(side=LEFT, padx=10)
+        imageBackArrow.bind('<Button-1>', lambda e: self.__handleBack)
+
+        image = Image.open(os.getcwd() + '/client/assets/next.png')
+        image = image.resize((16,16), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(image)
+        imageNextArrow = Label(self, image=photo, bg="#474C6B", cursor= "hand2")
+        imageNextArrow.image=photo
+        imageNextArrow.pack(side=RIGHT, padx=10)
+        imageNextArrow.bind('<Button-1>', lambda e: self.__handleNext)
+
     def run(self):
-        response = API().GET('/lobby')
+        response = API().POST('/lobby-by-page', {'page': self.__currentPage})
         lobbies = response['lobbies']
-        self.__lobiesContainer.destroy()
-        self.__lobiesContainer = Frame(self, width=730, height=300)
-        self.__lobiesContainer.configure(background="#1C1D2C")
-        self.__lobiesContainer.place(x=10, y=50)
+        print(response)
+        self.__currentPage = response['current_page']
+        self.__totalPages = response['total_pages']
+        
+        for l in self.__lobbies:
+            l.destroy()
+
         for l in lobbies:
             self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
+       
+        self.__placeLobby(self.__totalLobbies, lobbies[0]['lobbyid'], lobbies[0]['lobbyname'], lobbies[0]['users'])
+
+    def __handleNext(self):
+        if (self.__currentPage < self.__totalPages):
+            self.__currentPage += 1
+            self.__fetchAndPlaceLobbies()
+
+    def __handleBack(self):
+        if (self.__currentPage < 0):
+            self.__currentPage -= 1
+            self.__fetchAndPlaceLobbies()
+            
+    
+    def __fetchAndPlaceLobbies(self):
+        response = API().POST('/lobby-by-page', {'page': self.__currentPage})
+        lobbies = response['lobbies']
+
+        for l in self.__lobbies:
+            l.destroy()
+
+        for l in lobbies:
+            self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
+
 
     def __handleCreateLobbyButton(self):
         response = API().GET('/games')
@@ -76,7 +124,7 @@ class HomePage(Frame):
             messagebox.showerror('Erro', response['message'])
 
     def __placeLobby(self, col, lobbyid, lobbyName, lobbyUsers):
-        lobbyFrame = Frame(self.__lobiesContainer, width=158, height=259)
+        lobbyFrame = Frame(self.__lobiesContainer, width=135, height=259)
         lobbyFrame.configure(background='#292C3D', highlightbackground="white", highlightthickness=1)
         lobbyFrame.pack_propagate(False)
         headingText = Label(lobbyFrame, text=lobbyName, font="16",bg="#292C3D", fg="#FFFFFF")
@@ -86,6 +134,8 @@ class HomePage(Frame):
 
         buttonSubmit = Button(lobbyFrame, text="Entrar", command= lambda: self.__handleEntryLobby(lobbyid), bg="#0D9EF1", fg="#FFFFFF")
         buttonSubmit.pack(side=BOTTOM, pady=10)
+        
+        self.__lobbies.append(lobbyFrame)
 
         lobbyFrame.grid(row=0, column=col, pady=20, padx=10, ipadx=10, ipady=5)
 

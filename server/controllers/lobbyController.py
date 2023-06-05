@@ -4,13 +4,24 @@ from router import STATUS
 from models import lobbyModel
 from error import Error
 
-def GetAllLobbies():
-    lobbies = lobbyModel.getAllLobbies()
+def GetAllLobbies(payload):
+    response = {}
+    if (payload):
+        lobbies, offset, total_pages = lobbyModel.getAllLobbiesWithPagination(offset=payload['page'])
 
-    response = {
-        "lobbies": lobbies,
-        "status": STATUS['SUCCESS']
-    }
+        response = {
+            "lobbies": lobbies,
+            'current_page': offset,
+            'total_pages': total_pages,
+            "status": STATUS['SUCCESS']
+        }
+    else:
+        lobbies = lobbyModel.getAllLobbies()
+
+        response = {
+            "lobbies": lobbies,
+            "status": STATUS['SUCCESS']
+        }
 
     # todas as respostas devem estar formatadas em string
     # para poder ser enviada para o client no metodo send
