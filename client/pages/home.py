@@ -16,11 +16,27 @@ class HomePage(Frame):
         self.__controller = controller
 
         buttonSubmit = Button(self, text="Criar lobby", command=self.__handleCreateLobbyButton, bg="#0D9EF1", fg="#FFFFFF", width=12)
-        buttonSubmit.place(x=20, y=20)
+        buttonSubmit.place(x=25, y=20)
         self.__lobiesContainer = Frame(self, width=730, height=300)
         self.__lobiesContainer.configure(background="#1C1D2C")
-        self.__lobiesContainer.place(x=10, y=50)
+        self.__lobiesContainer.place(x=25, y=50)
         self.__totalLobbies = 0
+
+        imageBack = Image.open(os.getcwd() + '/client/assets/back.png')
+        imageBack = imageBack.resize((16,16), Image.ANTIALIAS)
+        photoBack = ImageTk.PhotoImage(imageBack)
+        imageBackArrow = Label(self, image=photoBack, bg="#474C6B", cursor= "hand2")
+        imageBackArrow.image=photoBack
+        imageBackArrow.pack(side=LEFT, padx=10)
+        imageBackArrow.bind('<Button-1>', lambda e: print('Hello back'))
+
+        image = Image.open(os.getcwd() + '/client/assets/next.png')
+        image = image.resize((16,16), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(image)
+        imageNextArrow = Label(self, image=photo, bg="#474C6B", cursor= "hand2")
+        imageNextArrow.image=photo
+        imageNextArrow.pack(side=RIGHT, padx=10)
+        imageNextArrow.bind('<Button-1>', lambda e: print('Hello next'))
 
     def run(self):
         response = API().GET('/lobby')
