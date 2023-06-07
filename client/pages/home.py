@@ -26,8 +26,8 @@ class HomePage(Frame):
         self.__lobiesContainer.place(x=25, y=50)
         self.__totalLobbies = 0
 
-        IconButton(self, 'back', self.__handleBack).pack(side=LEFT, padx=10)
-        IconButton(self, 'next', self.__handleNext).pack(side=RIGHT, padx=10)
+        IconButton(parent=self, icon='back', onClick=self.__handleBack).pack(side=LEFT, padx=10)
+        IconButton(parent=self, icon='next', onClick=self.__handleNext).pack(side=RIGHT, padx=10)
 
     def run(self):
         response = API().POST('/lobby-by-page', {'page': self.__currentPage})
