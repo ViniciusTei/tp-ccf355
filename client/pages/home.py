@@ -4,7 +4,8 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 import os
 
-from api import API 
+from api import API
+from components import IconButton
 
 class HomePage(Frame):
     __games = []
@@ -25,21 +26,8 @@ class HomePage(Frame):
         self.__lobiesContainer.place(x=25, y=50)
         self.__totalLobbies = 0
 
-        imageBack = Image.open(os.getcwd() + '/client/assets/back.png')
-        imageBack = imageBack.resize((16,16), Image.ANTIALIAS)
-        photoBack = ImageTk.PhotoImage(imageBack)
-        imageBackArrow = Label(self, image=photoBack, bg="#474C6B", cursor= "hand2")
-        imageBackArrow.image=photoBack
-        imageBackArrow.pack(side=LEFT, padx=10)
-        imageBackArrow.bind('<Button-1>', lambda e: self.__handleBack)
-
-        image = Image.open(os.getcwd() + '/client/assets/next.png')
-        image = image.resize((16,16), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(image)
-        imageNextArrow = Label(self, image=photo, bg="#474C6B", cursor= "hand2")
-        imageNextArrow.image=photo
-        imageNextArrow.pack(side=RIGHT, padx=10)
-        imageNextArrow.bind('<Button-1>', lambda e: self.__handleNext)
+        IconButton(parent=self, icon='back', onClick=self.__handleBack).pack(side=LEFT, padx=10)
+        IconButton(parent=self, icon='next', onClick=self.__handleNext).pack(side=RIGHT, padx=10)
 
     def run(self):
         response = API().POST('/lobby-by-page', {'page': self.__currentPage})

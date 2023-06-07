@@ -37,7 +37,7 @@ def CreateLobby(payload):
             "status": STATUS['SUCCESS']
         }
     else:
-        response = Error(message='Erro ao criar lobby', status=500)
+        response = Error(message='Erro ao criar lobby', status=500).toDict()
 
     return json.dumps(response)
 
@@ -50,7 +50,7 @@ def GetLobbyById(payload):
             "status": STATUS['SUCCESS']
         }
     else:
-        response = Error(message='Erro ao criar lobby', status=500)
+        response = Error(message='Erro ao criar lobby', status=500).toDict()
 
     return json.dumps(response)
 
@@ -61,7 +61,7 @@ def EnterLobby(payload):
         response['status'] = STATUS['SUCCESS']
         return json.dumps(response)
     else:
-        return json.dumps(Error(message=response['message'], status=STATUS['ERROR']))
+        return Error(message=response['error'], status=STATUS['ERROR']).toString()
     
 def LeaveLobby(payload):
     lobbyModel.LeaveLobby(lobbyid=payload['lobbyid'], userid=payload['userid'])
