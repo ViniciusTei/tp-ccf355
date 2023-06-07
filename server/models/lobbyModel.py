@@ -1,6 +1,7 @@
+import math
+import sqlite3
 from db import database
 from models import usersModel
-import math
 
 def getAllLobbies():
     databaseConn = database.DB().db
@@ -116,12 +117,24 @@ def enterLobby(lobbyid, userid):
             'message': 'Lobby full!'
         }
     
-    databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby, user_iduser) VALUES (?, ?) ', (lobbyid, userid))
-    databaseConn.commit()
+    try:
+        databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby, user_iduser) VALUES (?, ?) ', (lobbyid, userid))
+        databaseConn.commit()
+        databaseConn.close()
 
-    return {
-        'message': 'Success!'
-    }
+        return {
+            'message': 'Success!'
+        }
+    
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        databaseConn.close()
+        
+        return {
+            'message': 'Error!',
+            'error': ' '.join(er.args)
+        }
+
 
 def LeaveLobby(lobbyid, userid):
     databaseConn = database.DB().db
