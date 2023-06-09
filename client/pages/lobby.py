@@ -85,5 +85,10 @@ class LobbyPage(Frame):
         userFrame.place(x=10, y=userPos)
 
     def __handleChallenge(self, lobbyid):
-        print(lobbyid)
+        response = API().POST('/match', {'requester': self.__lobby['lobbyid'], 'challenge': lobbyid})
+
+        if response['status'] == 200:
+            messagebox.showinfo('Sucesso!', response['message'])
+        else:
+            messagebox.showerror('Erro!', response['message'])
 
