@@ -76,6 +76,7 @@ class RegisterPage(Frame):
             response = apiInstance.POST('/users', payload)
 
             if (response['status'] == 200):
+                self.__controller.user = response['user']
                 self.__controller.showFrame('home', True)
             else:
                 messagebox.showerror('Erro', 'Tente novamente mais tarde.')
