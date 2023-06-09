@@ -41,8 +41,6 @@ class HomePage(Frame):
 
         for l in lobbies:
             self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
-       
-        self.__placeLobby(self.__totalLobbies, lobbies[0]['lobbyid'], lobbies[0]['lobbyname'], lobbies[0]['users'])
 
     def __handleNext(self):
         if (self.__currentPage < self.__totalPages):
