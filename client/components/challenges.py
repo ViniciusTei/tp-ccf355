@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import threading
 import time
 
@@ -10,6 +11,7 @@ class ChallengesView(Frame):
         Frame.__init__(self, parent, background='#292C3D', height=35)
         Label(self, text="Desafios ativos:   ", bg="#292C3D", fg="#FFFFFF", cursor="hand2", font=('Roboto 8')).pack(side=LEFT)
         self.__lobbyid = lobbyid
+        self.__controller = controller
 
     def run(self):
         t = threading.Thread(target=self.__fetchChallenges)
@@ -40,7 +42,17 @@ class ChallengesView(Frame):
             time.sleep(8)
 
     def __handleAccept(self, id):
-        print('Accept', id)
+        response = API().POST('/accept-challenge', {'challengedId': self.__lobbyid, 'requesterId': id})
+
+        if response['status'] == 200:
+            self.__controller.showFrame('match', True, {'matchId': response['match']})
+        else:
+            messagebox.showerror('Erro', response['message'])
 
     def __handleReject(self, id):
-        print('Reject', id)
+        response = API().POST('/reject-challente', {'challengedId': self.__lobbyid, 'requesterId': id})
+
+        if response['status'] == 200:
+            messagebox.showinfo('Recusado!', response['message'])
+        else:
+            messagebox.showerror('Erro', response['message'])
