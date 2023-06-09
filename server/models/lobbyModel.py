@@ -1,3 +1,5 @@
+import math
+import sqlite3
 from db import database
 from models import usersModel
 
@@ -7,7 +9,10 @@ def getAllLobbies():
     lobbiesTupleList = databaseConn.execute('SELECT idlobby, name, username, image FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser ORDER BY l.idlobby').fetchall()
     
     databaseConn.close()
+    
+    return __createLobbiesListFromTuple(lobbiesTupleList)
 
+def __createLobbiesListFromTuple(lobbiesTupleList):
     lobbiesList = []
     
     for lobby in lobbiesTupleList:
@@ -30,6 +35,25 @@ def getAllLobbies():
                     })
     
     return lobbiesList
+
+def getAllLobbiesWithPagination(limit = 4, offset = 0):
+    databaseConn = database.DB().db
+    all_lobbies = lobbiesTupleList = databaseConn.execute('SELECT idlobby, name, username, image FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser ORDER BY l.idlobby LIMIT 4 OFFSET ?', (offset * limit,)).fetchall()
+    total_lobbies = len(all_lobbies)
+    total_pages = math.ceil(total_lobbies / limit)
+
+    if (total_pages < offset):
+        databaseConn.close()
+        return {
+            'error': 'Page off limit'
+        }
+    
+    lobbiesTupleList = databaseConn.execute('SELECT idlobby, name, username, image FROM lobby AS l JOIN lobby_has_user AS lhu ON l.idlobby=lhu.lobby_idlobby JOIN user AS u ON u.iduser = lhu.user_iduser ORDER BY l.idlobby').fetchall()
+    
+    databaseConn.close()
+    
+    return __createLobbiesListFromTuple(lobbiesTupleList), offset, total_pages
+
     
 def getLobbyById(id):
     databaseConn = database.DB().db
@@ -93,12 +117,24 @@ def enterLobby(lobbyid, userid):
             'message': 'Lobby full!'
         }
     
-    databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby, user_iduser) VALUES (?, ?) ', (lobbyid, userid))
-    databaseConn.commit()
+    try:
+        databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby, user_iduser) VALUES (?, ?) ', (lobbyid, userid))
+        databaseConn.commit()
+        databaseConn.close()
 
-    return {
-        'message': 'Success!'
-    }
+        return {
+            'message': 'Success!'
+        }
+    
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        databaseConn.close()
+        
+        return {
+            'message': 'Error!',
+            'error': ' '.join(er.args)
+        }
+
 
 def LeaveLobby(lobbyid, userid):
     databaseConn = database.DB().db

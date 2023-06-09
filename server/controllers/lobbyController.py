@@ -4,13 +4,24 @@ from router import STATUS
 from models import lobbyModel
 from error import Error
 
-def GetAllLobbies():
-    lobbies = lobbyModel.getAllLobbies()
+def GetAllLobbies(payload):
+    response = {}
+    if (payload):
+        lobbies, offset, total_pages = lobbyModel.getAllLobbiesWithPagination(offset=payload['page'])
 
-    response = {
-        "lobbies": lobbies,
-        "status": STATUS['SUCCESS']
-    }
+        response = {
+            "lobbies": lobbies,
+            'current_page': offset,
+            'total_pages': total_pages,
+            "status": STATUS['SUCCESS']
+        }
+    else:
+        lobbies = lobbyModel.getAllLobbies()
+
+        response = {
+            "lobbies": lobbies,
+            "status": STATUS['SUCCESS']
+        }
 
     # todas as respostas devem estar formatadas em string
     # para poder ser enviada para o client no metodo send
@@ -26,7 +37,7 @@ def CreateLobby(payload):
             "status": STATUS['SUCCESS']
         }
     else:
-        response = Error(message='Erro ao criar lobby', status=500)
+        response = Error(message='Erro ao criar lobby', status=500).toDict()
 
     return json.dumps(response)
 
@@ -39,7 +50,7 @@ def GetLobbyById(payload):
             "status": STATUS['SUCCESS']
         }
     else:
-        response = Error(message='Erro ao criar lobby', status=500)
+        response = Error(message='Erro ao criar lobby', status=500).toDict()
 
     return json.dumps(response)
 
@@ -50,7 +61,7 @@ def EnterLobby(payload):
         response['status'] = STATUS['SUCCESS']
         return json.dumps(response)
     else:
-        return json.dumps(Error(message=response['message'], status=STATUS['ERROR']))
+        return Error(message=response['error'], status=STATUS['ERROR']).toString()
     
 def LeaveLobby(payload):
     lobbyModel.LeaveLobby(lobbyid=payload['lobbyid'], userid=payload['userid'])
