@@ -16,22 +16,15 @@ class LobbyPage(Frame):
         self.__lobiesContainer = Frame(self, width=730, height=300)
         self.__lobiesContainer.configure(background="#1C1D2C")
         self.__totalLobbies = 0
-        
-
   
     def run(self, params):
-        response = API().POST('/lobby-by-id', params)
-        self.__lobby = response['lobby']
-        response2 = API().POST('/lobby-by-page', {'page': self.__currentPage})
-        lobbies = response2['lobbies']
-        print("TESTESTESTEESTTSETSETEST", response2)
-        print("TESTESTESTEESTTSETSETEST22222222222222222", response)
+        response_lobby_page = API().POST('/lobby-by-id', params)
+        self.__lobby = response_lobby_page['lobby']
+        response_all_lobies = API().POST('/lobby-by-page', {'page': self.__currentPage})
+        lobbies = response_all_lobies['lobbies']
 
-        self.__lobiesContainer.destroy()
-        self.__lobiesContainer = Frame(self, width=730, height=300)
-        self.__lobiesContainer.configure(background="#2fdaaa")
-        self.__lobiesContainer.place(x=10, y=50)
-        self.__frame = Frame(self, width=250, background="#292C3D")
+        # create left frame with current lobby
+        self.__frame = Frame(self, width=215, background="#292C3D")
         self.__frame.pack(fill=Y, side=LEFT)
         self.__frame.pack_propagate(False)
         Label(self.__frame, text=self.__lobby['lobbyname'], background="#292C3D", fg="#FFFFFF", font=('Roboto 12')).pack(pady=10)
@@ -43,31 +36,15 @@ class LobbyPage(Frame):
         
         buttonSubmit = Button(self.__frame, text="Deixar sala", command=self.__handleLeave, bg="#F46275", fg="#FFFFFF")
         buttonSubmit.pack(side=BOTTOM, pady=30)
-        for l in lobbies:
-            print("entrei no forzin\n")
-            self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users']) 
-                
-    def __lobbysFrame(self):
 
-        self.__frameLobbys = Frame(self.__frame,width=500,height=500, background="#FFF")
-        self.__frameLobbys.pack(side=RIGHT)
-        self.__frameLobbys.pack_propagate(False)
-        Label(self.__frameLobbys, text=self.__lobby['lobbyname'], background="#292C3D", fg="#FFFFFF", font=('Roboto 12')).pack(pady=10)
-
-
+        # create all lobbies to challenge
+        self.__lobiesContainer.destroy()
+        self.__lobiesContainer = Frame(self, width=730, height=300)
+        self.__lobiesContainer.configure(background="#1C1D2C")
+        self.__lobiesContainer.pack(fill=X, side=LEFT)
         
-    def __placeLobby(self, col, lobbyid, lobbyName, lobbyUsers):
-        lobbyFrame = Frame(self.__lobiesContainer, width=158 , height=259)
-        lobbyFrame.configure(background='#292C3D', highlightbackground="white", highlightthickness=1)
-        lobbyFrame.pack_propagate(False)
-        lobbyFrame.pack(side=RIGHT)
-        lobbyFrame.grid(row =0, column =1 ,padx=10,pady=10)
-        headingText = Label(lobbyFrame, text=lobbyName, font="16",bg="#292C3D", fg="#FFFFFF")
-        headingText.pack(side=TOP, pady=10)
-        buttonSubmit = Button(lobbyFrame, text="Desafiar", bg="#0D9EF1", fg="#FFFFFF")
-        for idx, user in enumerate(lobbyUsers):
-            self.__placeUser(lobbyFrame, idx, user)
-
+        for l in lobbies:
+            self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users']) 
 
     def __handleLeave(self):
         response = API().POST('/lobby-leave', {'lobbyid': self.__lobby['lobbyid'], 'userid': self.__controller.user['id']})
@@ -77,6 +54,22 @@ class LobbyPage(Frame):
             self.__controller.showFrame('home', True)
         else:
             messagebox.showerror('Erro', response['message'])
+
+    def __placeLobby(self, col, lobbyid, lobbyName, lobbyUsers):
+        lobbyFrame = Frame(self.__lobiesContainer, width=135, height=259)
+        lobbyFrame.configure(background='#292C3D', highlightbackground="white", highlightthickness=1)
+        lobbyFrame.pack_propagate(False)
+        headingText = Label(lobbyFrame, text=lobbyName, font="16",bg="#292C3D", fg="#FFFFFF")
+        headingText.pack(side=TOP, pady=10)
+        for idx, user in enumerate(lobbyUsers):
+            self.__placeUser(lobbyFrame, idx, user)
+
+        buttonSubmit = Button(lobbyFrame, text="Desafiar", command= lambda: self.__handleChallenge(lobbyid), bg="#0D9EF1", fg="#FFFFFF")
+        buttonSubmit.pack(side=BOTTOM, pady=10)
+
+        lobbyFrame.grid(row=0, column=col, pady=20, padx=10, ipadx=10, ipady=5)
+
+        self.__totalLobbies+=1
     
     def __placeUser(self, parent, userIndex, user):
         userFrame = Frame(parent, background='#292C3D')
@@ -91,4 +84,6 @@ class LobbyPage(Frame):
         userPos = 40 + (userIndex * 35)
         userFrame.place(x=10, y=userPos)
 
+    def __handleChallenge(self, lobbyid):
+        print(lobbyid)
 
