@@ -21,3 +21,21 @@ def GetAllChallenges(payload):
     else:
         response['status'] =  STATUS['SUCCESS']
         return json.dumps(response)
+    
+def AcceptChallenge(payload):
+    response = matchModel.accept(payload['challengedId'], payload['requesterId'])
+
+    if (hasattr(response, 'error')):
+        return Error(response['error'], STATUS['ERROR']).toString()
+    else:
+        response['status'] =  STATUS['SUCCESS']
+        return json.dumps(response)
+    
+def RejectChallenge(payload):
+    response = matchModel.reject(payload['challengedId'], payload['requesterId'])
+
+    if (hasattr(response, 'error')):
+        return Error(response['error'], STATUS['ERROR']).toString()
+    else:
+        response['status'] =  STATUS['SUCCESS']
+        return json.dumps(response)
