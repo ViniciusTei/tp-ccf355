@@ -7,16 +7,17 @@ from tkinter import *
 from PIL import ImageTk, Image
 import os
 
-from pages import HomePage, LoginPage, RegisterPage, PerfilPage, LobbyPage
+from pages import HomePage, LoginPage, RegisterPage, PerfilPage, LobbyPage, MatchPage
 
-layouts = (LoginPage, RegisterPage, HomePage, PerfilPage, LobbyPage)
+layouts = (LoginPage, RegisterPage, HomePage, PerfilPage, LobbyPage, MatchPage)
 
 map_layouts = {
   'login': LoginPage,
   'register': RegisterPage,
   'home': HomePage,
   'perfil': PerfilPage,
-  'lobby': LobbyPage
+  'lobby': LobbyPage,
+  'match': MatchPage
 }
 
 class App(Tk):
