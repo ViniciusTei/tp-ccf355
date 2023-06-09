@@ -7,7 +7,8 @@ from error import Error
 def Create(payload):
     response = matchModel.createMatch(payload['requester'], payload['challenge'])
 
-    if (response['error']):
+    if (hasattr(response, 'error')):
         return Error(response['error'], STATUS['ERROR']).toString()
     else:
+        response['status'] =  STATUS['SUCCESS']
         return json.dumps(response)
