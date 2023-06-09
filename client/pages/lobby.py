@@ -24,7 +24,7 @@ class LobbyPage(Frame):
         lobbies = response_all_lobies['lobbies']
 
         # create my challenges frame
-        self.__challengesContainer = ChallengesView(self, self.__controller)
+        self.__challengesContainer = ChallengesView(self, self.__controller, self.__lobby['lobbyid'])
         # self.__challengesContainer.configure(background="#1C1D2C")
         self.__challengesContainer.pack(fill=X, side=TOP)
         self.__challengesContainer.run()

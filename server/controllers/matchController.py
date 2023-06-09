@@ -12,3 +12,12 @@ def Create(payload):
     else:
         response['status'] =  STATUS['SUCCESS']
         return json.dumps(response)
+    
+def GetAllChallenges(payload):
+    response = matchModel.getChallenges(payload['lobbyid'])
+
+    if (hasattr(response, 'error')):
+        return Error(response['error'], STATUS['ERROR']).toString()
+    else:
+        response['status'] =  STATUS['SUCCESS']
+        return json.dumps(response)

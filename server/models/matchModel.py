@@ -36,10 +36,31 @@ def createMatch(requester_lobby_id, requested_lobby_id):
 
     cursor = databaseConn.execute('INSERT INTO match_challenge (match_id, lobby_requester, lobby_challenged, situation) VALUES (?, ?, ?, ?)', (idmatch, lobby_requester['lobbyid'], lobby_requested['lobbyid'], 'P' ))
     databaseConn.commit()
-    
+    databaseConn.close()
     response = {
         'message': 'Desafio criado com sucesso!'
     }
 
     return response
     
+def getChallenges(lobbyId):
+    databaseConn = database.DB().db
+    cursor = databaseConn.execute('SELECT idlobby, name, situation FROM match_challenge JOIN lobby ON match_challenge.lobby_requester=lobby.idlobby WHERE match_challenge.lobby_challenged == ?', (lobbyId,))
+    allLobbies = cursor.fetchall()
+    lobbiesList = []
+
+    for l in allLobbies:
+        if (l[2] == 'P'):
+            lobbiesList.append({
+                'lobbyid': l[0],
+                'name': l[1],
+            })
+
+    response = {
+        'message': 'Sucesso!',
+        'lobbies': lobbiesList
+    }
+
+    databaseConn.close()
+    
+    return response
