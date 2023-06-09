@@ -4,7 +4,7 @@ from PIL import ImageTk, Image
 import os
 
 from api import API
-from components import UserView
+from components import UserView, ChallengesView
 
 class LobbyPage(Frame):
     __lobby = None
@@ -22,6 +22,11 @@ class LobbyPage(Frame):
         self.__lobby = response_lobby_page['lobby']
         response_all_lobies = API().POST('/lobby-by-page', {'page': self.__currentPage})
         lobbies = response_all_lobies['lobbies']
+
+        # create my challenges frame
+        self.__challengesContainer = ChallengesView(self, self.__controller)
+        # self.__challengesContainer.configure(background="#1C1D2C")
+        self.__challengesContainer.pack(fill=X, side=TOP)
 
         # create left frame with current lobby
         self.__frame = Frame(self, width=215, background="#292C3D")
@@ -44,7 +49,7 @@ class LobbyPage(Frame):
         self.__lobiesContainer.pack(fill=X, side=LEFT)
         
         for l in lobbies:
-            self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users']) 
+            self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
 
     def __handleLeave(self):
         response = API().POST('/lobby-leave', {'lobbyid': self.__lobby['lobbyid'], 'userid': self.__controller.user['id']})
