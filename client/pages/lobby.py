@@ -27,6 +27,7 @@ class LobbyPage(Frame):
         self.__challengesContainer = ChallengesView(self, self.__controller)
         # self.__challengesContainer.configure(background="#1C1D2C")
         self.__challengesContainer.pack(fill=X, side=TOP)
+        self.__challengesContainer.run()
 
         # create left frame with current lobby
         self.__frame = Frame(self, width=215, background="#292C3D")
