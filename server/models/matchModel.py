@@ -144,3 +144,29 @@ def checkForChallenges(lobbyid):
             'message': 'Erro!',
             'error': ' '.join(er.args)
         }
+    
+def getMatch(matchId):
+    databaseConn = database.DB().db
+
+    try:
+        cursor = databaseConn.execute('SELECT lobby_requester, lobby_challenged FROM `match` JOIN match_challenge WHERE match_challenge.match_id == ? AND situation == ?', (matchId,'A'))
+        match = cursor.fetchone()
+        lobby_requester = lobbyModel.getLobbyById(match[0])
+        lobby_challenged = lobbyModel.getLobbyById(match[1])
+
+        response = {
+            'matchId': matchId,
+            'lobby_1': lobby_requester,
+            'lobby_2': lobby_challenged
+        }
+
+        return response
+    
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        databaseConn.close()
+        
+        return {
+            'message': 'Erro!',
+            'error': ' '.join(er.args)
+        }

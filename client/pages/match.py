@@ -10,13 +10,15 @@ class MatchPage(Frame):
         Frame.__init__(self, parent)
         self.__controller = controller
 
-    def run(self):
-        lobby1 = self.__createLobby('teste', [])
-        lobby2 = self.__createLobby('teste 2', [])
+    def run(self, params):
+        response = API().POST('/match-by-id', params)
+        lobby1 = self.__createLobby(response['lobby_1']['lobbyname'], response['lobby_1']['users'])
+        lobby2 = self.__createLobby(response['lobby_2']['lobbyname'], response['lobby_2']['users'])
         lobby1.pack(side=LEFT, padx=50)
         lobby2.pack(side=RIGHT, padx=50)
         buttonSubmit = Button(self, text="Terminar partida", bg="#0D9EF1", fg="#FFFFFF")
         buttonSubmit.pack(side=BOTTOM, pady=10)
+        return None
 
     def __createLobby(self, lobbyName, lobbyUsers):
         lobbyFrame = Frame(self, width=135, height=259)

@@ -18,7 +18,7 @@ Router.post(url='/lobby-by-page', callback=lobbyController.GetAllLobbies)
 Router.get(url='/games', callback=gamesController.GetAllGames)
 
 Router.post(url='/match', callback=matchController.Create)
-# Router.post(url='/match-by-id', callback=)
+Router.post(url='/match-by-id', callback=matchController.GetMatch)
 
 Router.post(url='/challenges', callback=matchController.GetAllChallenges)
 Router.post(url='/accept-challenge', callback=matchController.AcceptChallenge)

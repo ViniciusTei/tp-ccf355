@@ -48,3 +48,12 @@ def CheckForLobbies(payload):
     else:
         response['status'] =  STATUS['SUCCESS']
         return json.dumps(response)
+    
+def GetMatch(payload):
+    response = matchModel.getMatch(payload['matchId'])
+
+    if (hasattr(response, 'error')):
+        return Error(response['error'], STATUS['ERROR']).toString()
+    else:
+        response['status'] =  STATUS['SUCCESS']
+        return json.dumps(response)

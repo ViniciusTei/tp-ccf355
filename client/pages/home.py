@@ -32,7 +32,6 @@ class HomePage(Frame):
     def run(self):
         response = API().POST('/lobby-by-page', {'page': self.__currentPage})
         lobbies = response['lobbies']
-        print(response)
         self.__currentPage = response['current_page']
         self.__totalPages = response['total_pages']
         
@@ -41,6 +40,8 @@ class HomePage(Frame):
 
         for l in lobbies:
             self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
+
+        return None
 
     def __handleNext(self):
         if (self.__currentPage < self.__totalPages):
