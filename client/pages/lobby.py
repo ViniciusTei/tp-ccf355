@@ -2,9 +2,12 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import ImageTk, Image
 import os
+import threading
+import time
 
 from api import API
 from components import UserView, ChallengesView
+from utils import trhead
 
 class LobbyPage(Frame):
     __lobby = None
@@ -15,42 +18,66 @@ class LobbyPage(Frame):
         self.__frame = Frame(self, width=200, background="#292C3D")
         self.__lobiesContainer = Frame(self, width=730, height=300)
         self.__lobiesContainer.configure(background="#1C1D2C")
+        self.__challengesContainer = Frame(self)
         self.__totalLobbies = 0
+        self.__currentTrhead = None
   
     def run(self, params):
-        response_lobby_page = API().POST('/lobby-by-id', params)
-        self.__lobby = response_lobby_page['lobby']
-        response_all_lobies = API().POST('/lobby-by-page', {'page': self.__currentPage})
-        lobbies = response_all_lobies['lobbies']
+        t = trhead.thread_with_trace(target=self.__fetch, args=(params,))
+        t.daemon = True
+        t.start()
+        return t
 
-        # create my challenges frame
-        self.__challengesContainer = ChallengesView(self, self.__controller, self.__lobby['lobbyid'])
-        # self.__challengesContainer.configure(background="#1C1D2C")
-        self.__challengesContainer.pack(fill=X, side=TOP)
-        self.__challengesContainer.run()
+    def __fetch(self, params):
+        while True:
+            response_check = API().POST('/check-for-challenges', {'lobbyId': params['lobbyid']})
+            print('response check', response_check)
 
-        # create left frame with current lobby
-        self.__frame = Frame(self, width=215, background="#292C3D")
-        self.__frame.pack(fill=Y, side=LEFT)
-        self.__frame.pack_propagate(False)
-        Label(self.__frame, text=self.__lobby['lobbyname'], background="#292C3D", fg="#FFFFFF", font=('Roboto 12')).pack(pady=10)
-        
-        for idx, user in enumerate(self.__lobby['users']):
-            u = UserView(self.__frame, userName=user['username'], userImage=user['userimage'])
-            pos = u.calculatePos(idx)
-            u.place(x=10, y=pos)
-        
-        buttonSubmit = Button(self.__frame, text="Deixar sala", command=self.__handleLeave, bg="#F46275", fg="#FFFFFF")
-        buttonSubmit.pack(side=BOTTOM, pady=30)
+            if (hasattr(response_check, 'match')):
+                self.__controller.showFrame('match', True, {'matchId': response_check['match']})
+                return
 
-        # create all lobbies to challenge
-        self.__lobiesContainer.destroy()
-        self.__lobiesContainer = Frame(self, width=730, height=300)
-        self.__lobiesContainer.configure(background="#1C1D2C")
-        self.__lobiesContainer.pack(fill=X, side=LEFT)
-        
-        for l in lobbies:
-            self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
+            response_lobby_page = API().POST('/lobby-by-id', params)
+            self.__lobby = response_lobby_page['lobby']
+            response_all_lobies = API().POST('/lobby-by-page', {'page': self.__currentPage})
+            lobbies = response_all_lobies['lobbies']
+
+            if (self.__currentTrhead != None and self.__currentTrhead.isAlive()):
+                self.__currentTrhead.kill()
+                self.__currentTrhead.join()
+
+            # create my challenges frame
+            self.__challengesContainer.destroy()
+            self.__challengesContainer = ChallengesView(self, self.__controller, self.__lobby['lobbyid'])
+            # self.__challengesContainer.configure(background="#1C1D2C")
+            self.__challengesContainer.pack(fill=X, side=TOP)
+            self.__currentTrhead = self.__challengesContainer.run()
+
+            # create left frame with current lobby
+            self.__frame.destroy()
+            self.__frame = Frame(self, width=215, background="#292C3D")
+            self.__frame.pack(fill=Y, side=LEFT)
+            self.__frame.pack_propagate(False)
+            Label(self.__frame, text=self.__lobby['lobbyname'], background="#292C3D", fg="#FFFFFF", font=('Roboto 12')).pack(pady=10)
+            
+            for idx, user in enumerate(self.__lobby['users']):
+                u = UserView(self.__frame, userName=user['username'], userImage=user['userimage'])
+                pos = u.calculatePos(idx)
+                u.place(x=10, y=pos)
+            
+            buttonSubmit = Button(self.__frame, text="Deixar sala", command=self.__handleLeave, bg="#F46275", fg="#FFFFFF")
+            buttonSubmit.pack(side=BOTTOM, pady=30)
+
+            # create all lobbies to challenge
+            self.__lobiesContainer.destroy()
+            self.__lobiesContainer = Frame(self, width=730, height=300)
+            self.__lobiesContainer.configure(background="#1C1D2C")
+            self.__lobiesContainer.pack(fill=X, side=LEFT)
+            
+            for l in lobbies:
+                self.__placeLobby(self.__totalLobbies, l['lobbyid'], l['lobbyname'], l['users'])
+            
+            time.sleep(8)
 
     def __handleLeave(self):
         response = API().POST('/lobby-leave', {'lobbyid': self.__lobby['lobbyid'], 'userid': self.__controller.user['id']})

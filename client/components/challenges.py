@@ -15,7 +15,9 @@ class ChallengesView(Frame):
 
     def run(self):
         t = threading.Thread(target=self.__fetchChallenges)
+        t.daemon = True
         t.start()
+        return t
 
     def __fetchChallenges(self):
         while True:
@@ -31,8 +33,8 @@ class ChallengesView(Frame):
                 l_frame.configure(background='#292C3D', highlightbackground="white", highlightthickness=1)
                 time_name = Label(l_frame, text=lobby['name'], bg="#292C3D", fg="#FFFFFF", cursor="hand2", font=('Roboto 8'))
                 time_name.pack(side=LEFT)
-                btn_aceitar = Button(l_frame, text="V", command= lambda e: self.__handleAccept(lobby['lobbyid']), bg="#0D9EF1", fg="#FFFFFF", width=4)
-                btn_rejeitar = Button(l_frame, text="X", command= lambda e: self.__handleReject(lobby['lobbyid']), bg="#F46275", fg="#FFFFFF", width=4)
+                btn_aceitar = Button(l_frame, text="V", command= lambda: self.__handleAccept(lobby['lobbyid']), bg="#0D9EF1", fg="#FFFFFF", width=4)
+                btn_rejeitar = Button(l_frame, text="X", command= lambda: self.__handleReject(lobby['lobbyid']), bg="#F46275", fg="#FFFFFF", width=4)
                 btn_aceitar.pack(side=LEFT,padx=8)
                 btn_rejeitar.pack(side=LEFT)
 

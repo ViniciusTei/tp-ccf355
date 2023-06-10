@@ -39,3 +39,12 @@ def RejectChallenge(payload):
     else:
         response['status'] =  STATUS['SUCCESS']
         return json.dumps(response)
+    
+def CheckForLobbies(payload):
+    response = matchModel.checkForChallenges(payload['lobbyId'])
+
+    if (hasattr(response, 'error')):
+        return Error(response['error'], STATUS['ERROR']).toString()
+    else:
+        response['status'] =  STATUS['SUCCESS']
+        return json.dumps(response)
