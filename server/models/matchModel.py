@@ -1,3 +1,5 @@
+import sqlite3
+
 from db import database
 from datetime import datetime
 
@@ -36,10 +38,135 @@ def createMatch(requester_lobby_id, requested_lobby_id):
 
     cursor = databaseConn.execute('INSERT INTO match_challenge (match_id, lobby_requester, lobby_challenged, situation) VALUES (?, ?, ?, ?)', (idmatch, lobby_requester['lobbyid'], lobby_requested['lobbyid'], 'P' ))
     databaseConn.commit()
-    
+    databaseConn.close()
     response = {
         'message': 'Desafio criado com sucesso!'
     }
 
     return response
     
+def getChallenges(lobbyId):
+    databaseConn = database.DB().db
+    cursor = databaseConn.execute('SELECT idlobby, name, situation FROM match_challenge JOIN lobby ON match_challenge.lobby_requester=lobby.idlobby WHERE match_challenge.lobby_challenged == ?', (lobbyId,))
+    allLobbies = cursor.fetchall()
+    lobbiesList = []
+
+    for l in allLobbies:
+        if (l[2] == 'P'):
+            lobbiesList.append({
+                'lobbyid': l[0],
+                'name': l[1],
+            })
+
+    response = {
+        'message': 'Sucesso!',
+        'lobbies': lobbiesList
+    }
+
+    databaseConn.close()
+    
+    return response
+
+def accept(lobbyId, requesterLobbyId):
+    databaseConn = database.DB().db
+
+    try:
+        cursor = databaseConn.execute('SELECT match_challenge_id, match_id FROM match_challenge WHERE match_challenge.lobby_challenged == ? AND match_challenge.lobby_requester = ?', (lobbyId,requesterLobbyId))
+        lobby = cursor.fetchone()
+        print('lobby', lobby)
+        cursor = databaseConn.execute('UPDATE match_challenge SET situation=? WHERE match_challenge.match_challenge_id=?', ('A', lobby[0]))
+        databaseConn.commit()
+        databaseConn.close()
+
+        return {
+            'message': 'Sucesso!',
+            'match': lobby[1]
+        }
+    
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        databaseConn.close()
+        
+        return {
+            'message': 'Erro!',
+            'error': ' '.join(er.args)
+        }
+    
+def reject(lobbyId, requesterLobbyId):
+    databaseConn = database.DB().db
+
+    try:
+        cursor = databaseConn.execute('SELECT match_callenge_id FROM match_challenge WHERE match_challenge.lobby_challenged == ? AND WHERE match_challenge.lobby_requester = ?', (lobbyId,requesterLobbyId))
+        lobby = cursor.fetchone()
+        cursor = databaseConn.execute('UPDATE match_challenge SET situation=? WHERE match_challenge.match_callenge_id=?', ('R', lobby[0]))
+        databaseConn.commit()
+        databaseConn.close()
+
+        return {
+            'message': 'Sucesso!'
+        }
+    
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        databaseConn.close()
+        
+        return {
+            'message': 'Erro!',
+            'error': ' '.join(er.args)
+        }
+    
+def checkForChallenges(lobbyid):
+    databaseConn = database.DB().db
+    
+    try:
+        cursor = databaseConn.execute('SELECT match_id, situation FROM match_challenge WHERE match_challenge.lobby_challenged == ? OR match_challenge.lobby_requester = ?', (lobbyid,lobbyid))
+        matches = cursor.fetchall()
+
+        response = {
+            'message': 'Sucesso!'
+        }
+
+        for m in matches:
+            if (m[1] == 'A'):
+                response['match'] = m[0]
+
+        databaseConn.close()
+
+        print('reponse check', response)
+
+        return response
+    
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        databaseConn.close()
+        
+        return {
+            'message': 'Erro!',
+            'error': ' '.join(er.args)
+        }
+    
+def getMatch(matchId):
+    databaseConn = database.DB().db
+
+    try:
+        cursor = databaseConn.execute('SELECT lobby_requester, lobby_challenged FROM `match` JOIN match_challenge WHERE match_challenge.match_id == ? AND situation == ?', (matchId,'A'))
+        match = cursor.fetchone()
+        lobby_requester = lobbyModel.getLobbyById(match[0])
+        lobby_challenged = lobbyModel.getLobbyById(match[1])
+
+        response = {
+            'matchId': matchId,
+            'lobby_1': lobby_requester,
+            'lobby_2': lobby_challenged
+        }
+
+        return response
+    
+    except sqlite3.Error as er:
+        print('SQLite error: %s' % (' '.join(er.args)))
+        databaseConn.close()
+        
+        return {
+            'message': 'Erro!',
+            'error': ' '.join(er.args)
+        }

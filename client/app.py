@@ -7,16 +7,17 @@ from tkinter import *
 from PIL import ImageTk, Image
 import os
 
-from pages import HomePage, LoginPage, RegisterPage, PerfilPage, LobbyPage
+from pages import HomePage, LoginPage, RegisterPage, PerfilPage, LobbyPage, MatchPage
 
-layouts = (LoginPage, RegisterPage, HomePage, PerfilPage, LobbyPage)
+layouts = (LoginPage, RegisterPage, HomePage, PerfilPage, LobbyPage, MatchPage)
 
 map_layouts = {
   'login': LoginPage,
   'register': RegisterPage,
   'home': HomePage,
   'perfil': PerfilPage,
-  'lobby': LobbyPage
+  'lobby': LobbyPage,
+  'match': MatchPage
 }
 
 class App(Tk):
@@ -24,6 +25,8 @@ class App(Tk):
 
   def __init__(self, *args, **kwargs):
     Tk.__init__(self, *args, **kwargs)
+
+    self.__currentTrhead = None
 
     # create main container
     container = Frame(self)
@@ -79,6 +82,10 @@ class App(Tk):
     if cont not in map_layouts.keys():
       print('Page not found!')
       return
+    
+    if (self.__currentTrhead != None  and self.__currentTrhead.isAlive()):
+      self.__currentTrhead.kill()
+      self.__currentTrhead.join()
 
     layout = map_layouts[cont]
 
@@ -87,9 +94,9 @@ class App(Tk):
 
     if hasattr(frame, 'run'):
       if pageParams:
-        frame.run(pageParams)
+        self.__currentTrhead = frame.run(pageParams)
       else:
-        frame.run()
+        self.__currentTrhead = frame.run()
 
   def __placeMenu(self):
     self.__menu.grid(row=0, column=0, sticky="nsew")
