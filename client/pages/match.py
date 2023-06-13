@@ -3,7 +3,7 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 import os
 
-from api import API
+from service import MatchService
 
 class MatchPage(Frame):
     def  __init__(self, parent, controller):
@@ -11,7 +11,7 @@ class MatchPage(Frame):
         self.__controller = controller
 
     def run(self, params):
-        response = API().POST('/match-by-id', params)
+        response = MatchService().getMatchById(params)
         lobby1 = self.__createLobby(response['lobby_1']['lobbyname'], response['lobby_1']['users'])
         lobby2 = self.__createLobby(response['lobby_2']['lobbyname'], response['lobby_2']['users'])
         lobby1.pack(side=LEFT, padx=50)
