@@ -68,3 +68,53 @@ aponte como a mesma poderia ser detectada e tratada.
   - Para o modelo de segurança, explique se o seu SD necessita de um ou mais
 mecanismos para realizar (a) proteção aos processos e (b) proteção ao canal de
 comunicação.
+
+# Trabalho 3
+
+Desta forma, nesta, que é a parte 3 do trabalho, toda a implementação deverá ser feita com uso
+apenas da API de Sockets. Cada elemento do sistema deverá ser implementado como um processo e
+a comunicação deverá ser feita por fluxo TCP. Observe que, ao usar a API de Sockets, a
+comunicação é feita entre processos, utilizando troca de mensagens, as quais devem ser
+inteiramente construídas e gerenciadas pelo programador. Em outras palavras, vocês serão
+responsáveis por definir a estrutura das mensagens a serem trocadas e deverá programar todo o
+processo de construção e leitura das mesmas. O recurso de threads deverá ser utilizado nesta
+implementação de forma bastante simples: o processo servidor deverá utilizar uma thread para
+recepcionar as requisições recebidas e outra (a principal) para processá-las. O uso de interface
+gráfica (simples, sem exageros) é obrigatório. Para a implementação deverá ser utilizada
+obrigatoriamente a linguagem Python (e somente ela).
+
+**Requisitos**:
+
+- 1) O SD será testado no sistema operacional Linux. Sugiro fortemente o uso deste SO no
+desenvolvimento do trabalho, visto que não serão feitas adaptações nos códigos entregues para que
+os mesmos possam executar corretamente.
+- 2) O SD deve possuir base de dados implementada via SQLite com arquivo[1], devendo o mesmo já
+conter tudo o que for necessário para que o sistema seja utilizado com sucesso (ou seja, o banco já
+precisa vir populado).
+- 3) Utilização de arquivo makefile para facilitar a execução do SD. Você pode criar os comandos do
+makefile da maneira que achar mais conveniente (run, install, etc...), porém tudo terá que estar
+explicando do arquivo README.txt mencionado abaixo.
+- 4) Utilização de ambiente virtual leve do Python (virtualenv) [2]. Para rodar seu SD, considere que
+terá que ser criado o virtualenv contendo todas as instalações necessárias. Desta forma, a criação
+deste ambiente deverá fazer parte das tarefas automatizadas pelo seu makefile.
+- 5) Considerar o uso de Python versão 3.
+
+# Trabalho 4
+
+Dando continuidade ao trabalho prático, vamos realizar agora a quarta parte. Nela, cada grupo
+utilizará o recurso de um middleware RMI para reimplementar o mesmo SD desenvolvido na Parte
+3. Em particular, todos deverão necessariamente utilizar o Middleware Pyro5. Como este
+Middleware foi feito para a linguagem Pyhton, vocês poderão aproveitar parte do que foi codificado
+no desenvolvimento da Parte 3 deste trabalho. 
+
+Atenção: ao fazer uso do Pyro5, vocês devem necessariamente utilizar a versão com Name Server.
+Além disso, devem continuar utilizando o SQLite como base de dados e produzir um arquivo
+makefile que contenha os comandos necessários para a criação do ambiente virtual e execução do
+sistema distribuído.
+
+O que deve ser entregue:
+
+- documentação pequena porém completa, descrevendo o projeto desta reimplementação do SD. Na
+seção de conclusão, além de comentar sobre as vantagens e dificuldades encontradas com a nova
+implementação, você deverá fazer um paralelo entre as partes 3 e 4 do trabalho.
+- todo código fonte produzido.
