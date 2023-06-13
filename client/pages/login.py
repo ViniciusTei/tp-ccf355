@@ -3,8 +3,8 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 import os
 
-from api import API 
 from components import Input
+from service import SessionService
 
 class LoginPage(Frame):
     def  __init__(self, parent, controller):
@@ -53,15 +53,7 @@ class LoginPage(Frame):
         user = self.__entryUser.get()
         password = self.__entryPassword.get()
         
-        payload = {
-            "username": user,
-            "password": password
-        }
-
-        apiInstance = API()
-        response = apiInstance.POST('/session', payload)
-        print('from server', response)
-        # messagebox.showinfo('Info', response)
+        response = SessionService().login(user, password)
 
         if (response['status'] == 200):
             self.__controller.user = response['user']
