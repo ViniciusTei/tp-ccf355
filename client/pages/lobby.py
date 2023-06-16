@@ -8,6 +8,7 @@ import time
 from api import API
 from components import UserView, ChallengesView
 from utils import trhead
+from service import LobbyService
 
 class LobbyPage(Frame):
     __lobby = None
@@ -30,16 +31,16 @@ class LobbyPage(Frame):
 
     def __fetch(self, params):
         while True:
-            response_check = API().POST('/check-for-challenges', {'lobbyId': params['lobbyid']})
+            response_check = LobbyService().checkForChallengers(params['lobbyid'])
             print('response check', response_check)
 
             if (hasattr(response_check, 'match')):
                 self.__controller.showFrame('match', True, {'matchId': response_check['match']})
                 return
 
-            response_lobby_page = API().POST('/lobby-by-id', params)
+            response_lobby_page = LobbyService().getAllLobbies(params)
             self.__lobby = response_lobby_page['lobby']
-            response_all_lobies = API().POST('/lobby-by-page', {'page': self.__currentPage})
+            response_all_lobies = LobbyService().getLobbyPerPage(params)
             lobbies = response_all_lobies['lobbies']
 
             if (self.__currentTrhead != None and self.__currentTrhead.isAlive()):
@@ -118,7 +119,7 @@ class LobbyPage(Frame):
         userFrame.place(x=10, y=userPos)
 
     def __handleChallenge(self, lobbyid):
-        response = API().POST('/match', {'requester': self.__lobby['lobbyid'], 'challenge': lobbyid})
+        response = LobbyService().acceptChallenger(self.__lobby['lobbyid'], lobbyid)
 
         if response['status'] == 200:
             messagebox.showinfo('Sucesso!', response['message'])
