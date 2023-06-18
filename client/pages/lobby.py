@@ -81,7 +81,7 @@ class LobbyPage(Frame):
             time.sleep(8)
 
     def __handleLeave(self):
-        response = API().POST('/lobby-leave', {'lobbyid': self.__lobby['lobbyid'], 'userid': self.__controller.user['id']})
+        response = LobbyService().leaveLobby(self.__lobby['lobbyid'], self.__controller.user['id'])
 
         if response['status'] == 200:
             self.__frame.destroy()

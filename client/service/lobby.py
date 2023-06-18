@@ -40,3 +40,32 @@ class LobbyService:
         return response
       except:
         print('Error ao aceitar desafio entre lobbies!')
+
+  def leaveLobby(self, lobbyId, userId):
+      try:
+        payload = {'lobbyid': lobbyId, 'userid': userId}        
+        response =  self.__api.exec('POST','/lobby-leave', payload)
+        print('from server', response)
+        return response
+      except:
+        print('Error ao sair sa lobby!')
+  
+  def createLobby(self, userId, gameId):
+      #response = API().POST('/lobby', {'userId': self.__controller.user['id'], 'gameId': gameId})
+      try:
+        payload = {'userId': userId, 'gameId': gameId}        
+        response =  self.__api.exec('POST','/lobby', payload)
+        print('from server', response)
+        return response
+      except:
+        print('Error ao criar lobby!')
+
+  def joinLobby(self, lobbyId, userId):
+      #response = API().POST('/lobby-enter', {'lobbyid': lobbyid, 'userid': self.__controller.user['id']})
+      try:
+        payload = {'lobbyid': lobbyId, 'userid': userId}        
+        response =  self.__api.exec('POST','/lobby-enter', payload)
+        print('from server', response)
+        return response
+      except:
+        print('Error ao entrar em lobby!')
