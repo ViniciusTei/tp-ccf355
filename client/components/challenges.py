@@ -3,7 +3,7 @@ from tkinter import messagebox
 import threading
 import time
 
-from api import API
+from service import ChallengesService
 
 class ChallengesView(Frame):
     __challenges = []
@@ -21,7 +21,7 @@ class ChallengesView(Frame):
 
     def __fetchChallenges(self):
         while True:
-            response = API().POST('/challenges', {'lobbyid': self.__lobbyid})
+            response = ChallengesService().getChallenges(self.__lobbyid)
             print(response)
             challenges = response['lobbies']
             for c in self.__challenges:
@@ -44,7 +44,7 @@ class ChallengesView(Frame):
             time.sleep(8)
 
     def __handleAccept(self, id):
-        response = API().POST('/accept-challenge', {'challengedId': self.__lobbyid, 'requesterId': id})
+        response = ChallengesService().acceptChallenge(self.__lobbyid, id)
 
         if response['status'] == 200:
             self.__controller.showFrame('match', True, {'matchId': response['match']})
@@ -52,7 +52,7 @@ class ChallengesView(Frame):
             messagebox.showerror('Erro', response['message'])
 
     def __handleReject(self, id):
-        response = API().POST('/reject-challente', {'challengedId': self.__lobbyid, 'requesterId': id})
+        response = ChallengesService().rejectChallenge(self.__lobbyid, id)
 
         if response['status'] == 200:
             messagebox.showinfo('Recusado!', response['message'])

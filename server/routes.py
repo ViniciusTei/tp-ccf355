@@ -23,5 +23,5 @@ Router.post(url='/match-by-id', callback=matchController.GetMatch)
 
 Router.post(url='/challenges', callback=matchController.GetAllChallenges)
 Router.post(url='/accept-challenge', callback=matchController.AcceptChallenge)
-Router.post(url='/reject-challente', callback=matchController.RejectChallenge)
+Router.post(url='/reject-challenge', callback=matchController.RejectChallenge)
 Router.post(url='/check-for-challenges', callback=matchController.CheckForLobbies)
