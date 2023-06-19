@@ -5,7 +5,6 @@ import os
 import threading
 import time
 
-from api import API
 from components import UserView, ChallengesView
 from utils import trhead
 from service import LobbyService
@@ -32,15 +31,15 @@ class LobbyPage(Frame):
     def __fetch(self, params):
         while True:
             response_check = LobbyService().checkForChallengers(params['lobbyid'])
-            print('response check', response_check)
 
             if (hasattr(response_check, 'match')):
                 self.__controller.showFrame('match', True, {'matchId': response_check['match']})
                 return
 
-            response_lobby_page = LobbyService().getAllLobbies(params)
+            response_lobby_page = LobbyService().getLobbyById(params)
             self.__lobby = response_lobby_page['lobby']
-            response_all_lobies = LobbyService().getLobbyPerPage(params)
+
+            response_all_lobies = LobbyService().getLobbyPerPage(self.__currentPage)
             lobbies = response_all_lobies['lobbies']
 
             if (self.__currentTrhead != None and self.__currentTrhead.isAlive()):
