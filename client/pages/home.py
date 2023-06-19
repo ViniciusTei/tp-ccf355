@@ -4,9 +4,8 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 import os
 
-from api import API
 from components import IconButton
-from service import LobbyService
+from service import LobbyService, GamesService
 
 class HomePage(Frame):
     __games = []
@@ -69,7 +68,7 @@ class HomePage(Frame):
 
 
     def __handleCreateLobbyButton(self):
-        response = API().GET('/games')
+        response = GamesService().getAllGames()
         self.__games = response['games']
         gameValues = []
         for game in self.__games:
