@@ -1,4 +1,3 @@
-# from api import API
 import pyro
 
 class LobbyService:
