@@ -9,7 +9,7 @@ class LobbyService:
       try:
         payload = {'lobbyId': lobbyId}        
         response =  self.__api.exec('POST','/check-for-challenges', payload)
-        print('from server', response)
+        print('from server /check-for-challenges', response)
         return response
       except:
         print('Error ao buscar desafios recebidos!')

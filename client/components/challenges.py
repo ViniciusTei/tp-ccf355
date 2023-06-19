@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
-import threading
 import time
 
+from utils import trhead
 from service import ChallengesService
 
 class ChallengesView(Frame):
@@ -14,7 +14,7 @@ class ChallengesView(Frame):
         self.__controller = controller
 
     def run(self):
-        t = threading.Thread(target=self.__fetchChallenges)
+        t = trhead.thread_with_trace(target=self.__fetchChallenges)
         t.daemon = True
         t.start()
         return t

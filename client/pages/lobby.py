@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import ImageTk, Image
 import os
-import threading
 import time
 
 from components import UserView, ChallengesView
@@ -32,9 +31,11 @@ class LobbyPage(Frame):
         while True:
             response_check = LobbyService().checkForChallengers(params['lobbyid'])
 
-            if (hasattr(response_check, 'match')):
+            if (response_check['match'] != None):
+                if (self.__currentTrhead != None and self.__currentTrhead.is_alive()):
+                    self.__currentTrhead.kill()
                 self.__controller.showFrame('match', True, {'matchId': response_check['match']})
-                return
+                break
 
             response_lobby_page = LobbyService().getLobbyById(params)
             self.__lobby = response_lobby_page['lobby']
@@ -44,7 +45,6 @@ class LobbyPage(Frame):
 
             if (self.__currentTrhead != None and self.__currentTrhead.is_alive()):
                 self.__currentTrhead.kill()
-                self.__currentTrhead.join()
 
             # create my challenges frame
             self.__challengesContainer.destroy()

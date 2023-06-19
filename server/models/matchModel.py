@@ -123,7 +123,8 @@ def checkForChallenges(lobbyid):
         matches = cursor.fetchall()
 
         response = {
-            'message': 'Sucesso!'
+            'message': 'Sucesso!',
+            'match': None
         }
 
         for m in matches:

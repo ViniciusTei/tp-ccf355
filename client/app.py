@@ -74,11 +74,6 @@ class App(Tk):
     self.showFrame('login')
 
   def showFrame(self, cont, showMenu=False, pageParams=None):
-    if showMenu:
-      self.__placeMenu()
-    else:
-      self.__menu.grid_remove()
-    
     if cont not in map_layouts.keys():
       print('Page not found!')
       return
@@ -86,6 +81,11 @@ class App(Tk):
     if (self.__currentTrhead != None  and self.__currentTrhead.is_alive()):
       self.__currentTrhead.kill()
       self.__currentTrhead.join()
+    
+    if showMenu:
+      self.__placeMenu()
+    else:
+      self.__menu.grid_remove()
 
     layout = map_layouts[cont]
 
