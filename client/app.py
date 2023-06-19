@@ -83,7 +83,7 @@ class App(Tk):
       print('Page not found!')
       return
     
-    if (self.__currentTrhead != None  and self.__currentTrhead.isAlive()):
+    if (self.__currentTrhead != None  and self.__currentTrhead.is_alive()):
       self.__currentTrhead.kill()
       self.__currentTrhead.join()
 

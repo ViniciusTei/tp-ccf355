@@ -42,7 +42,7 @@ class LobbyPage(Frame):
             response_all_lobies = LobbyService().getLobbyPerPage(self.__currentPage)
             lobbies = response_all_lobies['lobbies']
 
-            if (self.__currentTrhead != None and self.__currentTrhead.isAlive()):
+            if (self.__currentTrhead != None and self.__currentTrhead.is_alive()):
                 self.__currentTrhead.kill()
                 self.__currentTrhead.join()
 
