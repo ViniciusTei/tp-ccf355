@@ -9,12 +9,13 @@ venv/bin/activate: requirements.txt
 	chmod +x venv/bin/activate
 	. ./venv/bin/activate
 	$(PIP) install -r requirements.txt
+	$(PYTHON) -m Pyro5.nameserver
 
 venv: venv/bin/activate
 	. ./venv/bin/activate
 
 run_server: venv
-	$(PYTHON) ./server/server.py
+	$(PYTHON) ./server/pyro.py
 
 run_client: venv
 	$(PYTHON) ./client/client.py
