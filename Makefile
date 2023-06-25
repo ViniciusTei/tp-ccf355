@@ -17,9 +17,15 @@ run_nameserver: venv
 		$(PYTHON) -m Pyro5.nameserver
 
 run_server: venv
-	$(PYTHON) ./server/pyro.py
+	flask --app ./server/app.py run
 
 run_client: venv
+	$(PYTHON) ./client/client.py
+
+run_w_server: 
+	flask --app ./server/app.py run
+
+run_w_client: 
 	$(PYTHON) ./client/client.py
 
 clean:
