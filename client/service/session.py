@@ -1,8 +1,8 @@
-import pyro
+import requests
 
 class SessionService:
   def __init__(self) -> None:
-      self.__api = pyro.Server()
+      self.__api = requests
       pass
   
   def login(self, username, password):
@@ -12,9 +12,8 @@ class SessionService:
                 "password": password
             }
 
-        response =  self.__api.exec('POST', '/session', payload)
-        print('from server', response)
-        return response
+        response = self.__api.post('http://127.0.0.1:5000/session', json=payload)
+        return response.json()
       except:
         print('Erro ao tentar fazer o login!')
 
@@ -25,7 +24,7 @@ class SessionService:
           'image': image
       }
 
-      response =  self.__api.exec('POST', '/users', payload)
+      response =  self.__api.post('http://127.0.0.1:5000/users', json=payload)
       return response
   
   def updateUser(self, username, password):
@@ -34,5 +33,5 @@ class SessionService:
             "password":password
         }
 
-    response = self.__api.exec('POST', '/update', payload)
+    response = self.__api.post('http://127.0.0.1:5000/update', json=payload)
     return response

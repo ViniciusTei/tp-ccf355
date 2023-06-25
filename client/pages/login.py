@@ -54,6 +54,7 @@ class LoginPage(Frame):
         password = self.__entryPassword.get()
         
         response = SessionService().login(user, password)
+        print('response', response)
 
         if (response['status'] == 200):
             self.__controller.user = response['user']
