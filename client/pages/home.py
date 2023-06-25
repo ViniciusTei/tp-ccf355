@@ -4,8 +4,8 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 import os
 
-from api import API
 from components import IconButton
+from service import LobbyService, GamesService
 
 class HomePage(Frame):
     __games = []
@@ -30,7 +30,8 @@ class HomePage(Frame):
         IconButton(parent=self, icon='next', onClick=self.__handleNext).pack(side=RIGHT, padx=10)
 
     def run(self):
-        response = API().POST('/lobby-by-page', {'page': self.__currentPage})
+        #response = API().POST('/lobby-by-page', {'page': self.__currentPage})
+        response = LobbyService().getLobbyPerPage(self.__currentPage)
         lobbies = response['lobbies']
         self.__currentPage = response['current_page']
         self.__totalPages = response['total_pages']
@@ -55,7 +56,8 @@ class HomePage(Frame):
             
     
     def __fetchAndPlaceLobbies(self):
-        response = API().POST('/lobby-by-page', {'page': self.__currentPage})
+        #response = API().POST('/lobby-by-page', {'page': self.__currentPage})
+        response = LobbyService().getLobbyPerPage(self.__currentPage)
         lobbies = response['lobbies']
 
         for l in self.__lobbies:
@@ -66,7 +68,7 @@ class HomePage(Frame):
 
 
     def __handleCreateLobbyButton(self):
-        response = API().GET('/games')
+        response = GamesService().getAllGames()
         self.__games = response['games']
         gameValues = []
         for game in self.__games:
@@ -93,7 +95,8 @@ class HomePage(Frame):
             if self.__selectedGameValue.get() == g['name']:
                 gameId = g['id']
         
-        response = API().POST('/lobby', {'userId': self.__controller.user['id'], 'gameId': gameId})
+        #response = API().POST('/lobby', {'userId': self.__controller.user['id'], 'gameId': gameId})
+        response = LobbyService().createLobby(self.__controller.user['id'],gameId)
 
         if response['status'] == 200:
             self.__controller.showFrame('lobby', True, {'lobbyid': response['lobby']['lobbyId']})
@@ -103,7 +106,8 @@ class HomePage(Frame):
         #print('criar', self.__controller.user, self.__selectedGameValue.get())
 
     def __handleEntryLobby(self, lobbyid):
-        response = API().POST('/lobby-enter', {'lobbyid': lobbyid, 'userid': self.__controller.user['id']})
+        #response = API().POST('/lobby-enter', {'lobbyid': lobbyid, 'userid': self.__controller.user['id']})
+        response = LobbyService().joinLobby(lobbyid, self.__controller.user['id'])
 
         if response['status'] == 200:
             self.__controller.showFrame('lobby', True, {'lobbyid': lobbyid})

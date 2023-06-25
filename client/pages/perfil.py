@@ -3,8 +3,8 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 import os
 
-from api import API 
 from components import Input, ImageSelect
+from service import SessionService
 
 class PerfilPage(Frame):
     def __init__(self, parent, controller):
@@ -46,13 +46,8 @@ class PerfilPage(Frame):
     def __submit(self):
         user = self.__entryUser.get()
         password = self.__entryPassword.get()
-        payload = {
-            "username":user,
-            "password":password
-        }
 
-        apiIntance = API()
-        response = apiIntance.POST('/update', payload)
+        response = SessionService().updateUser(user, password)
         print('from server', response)
 
         if(response['status']==200):
