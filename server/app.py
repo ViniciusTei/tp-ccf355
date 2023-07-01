@@ -21,3 +21,81 @@ def session():
 
 if __name__ == '__main__':
     app.run()
+
+@app.get("/lobby")
+def lobbies():
+    res = make_response(lobbyController.GetAllLobbies())
+    return res
+
+@app.post("/lobby")
+def createLobby():
+    payload = request.json
+    res = make_response(lobbyController.CreateLobby(payload))
+    return res
+
+@app.get("/lobby-by-id")
+def lobbyById(id):
+    payload = {
+        "lobbyid": id
+    }
+    res = make_response(lobbyController.GetLobbyById(payload))
+    return res
+
+@app.post("/lobby-leave")
+def leaveLobby():
+    payload = request.json
+    res = make_response(lobbyController.LeaveLobby(payload))
+    return res
+
+@app.post("/lobby-enter")
+def enterLobby():
+    payload = request.json
+    res = make_response(lobbyController.EnterLobby(payload))
+    return res
+
+@app.post("/check-for-challenges")
+def leaveLobby():
+    payload = request.json
+    res = make_response(matchController.CheckForLobbies(payload))
+    return res
+
+@app.post("/lobby-by-page")
+def lobbyByPage():
+    payload = request.json
+    res = make_response(lobbyController.GetAllLobbies(payload))
+    return res
+
+@app.get("/games")
+def games():
+    res = make_response(gamesController.GetAllGames())
+    return res
+
+@app.post("/match")
+def createMatch():
+    payload = request.json
+    res = make_response(matchController.Create(payload))
+    return res
+
+@app.post("/match-by-id")
+def matchById():
+    payload = request.json
+    res = make_response(matchController.GetMatch(payload))
+    return res
+
+@app.post("/challenges")
+def challenges():
+    payload = request.json
+    res = make_response(matchController.GetAllChallenges(payload))
+    return res
+
+@app.post("/accept-challenge")
+def acceptChallenge():
+    payload = request.json
+    res = make_response(matchController.AcceptChallenge(payload))
+    return res
+
+@app.post("/reject-challenge")
+def rejectChallenge():
+    payload = request.json
+    res = make_response(matchController.RejectChallenge(payload))
+    return res
