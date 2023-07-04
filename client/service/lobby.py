@@ -55,10 +55,10 @@ class LobbyService:
         print('Error ao sair da lobby!')
         raise Exception('Error ao sair da lobby!')
   
-  def createLobby(self, userId, gameId):
+  def createLobby(self, userId, game):
       #response = API().POST('/lobby', {'userId': self.__controller.user['id'], 'gameId': gameId})
       try:
-        payload = {'userId': userId, 'gameId': gameId} 
+        payload = {'userId': userId, 'game': game} 
         response = self.__api.post('http://127.0.0.1:5000/lobby', json=payload)       
         print('from server', response)
         return response.json()

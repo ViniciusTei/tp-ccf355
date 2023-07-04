@@ -29,7 +29,7 @@ def GetAllLobbies(payload):
 
 
 def CreateLobby(payload):
-    lobby = lobbyModel.createLobby(payload['userId'], payload['gameId'])
+    lobby = lobbyModel.createLobby(payload['userId'], payload['game'])
 
     if lobby:
         response = {
