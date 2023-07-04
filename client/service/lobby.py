@@ -10,7 +10,7 @@ class LobbyService:
         payload = {'lobbyId': lobbyId}        
         response = self.__api.post('http://127.0.0.1:5000/check-for-challenges', json=payload)
         print('from server /check-for-challenges', response)
-        return response
+        return response.json()
       except:
         print('Error ao buscar desafios recebidos!')
         raise Exception('Error ao buscar desafios recebidos!')
@@ -20,7 +20,7 @@ class LobbyService:
       try:        
         response = self.__api.get('http://127.0.0.1:5000/lobby')
         print('from server', response)
-        return response
+        return response.json()
       except:
         print('Error ao buscar todas as lobbies!')
         raise Exception('Error ao buscar todas as lobbies!')
@@ -30,7 +30,7 @@ class LobbyService:
         payload = {'page': params}        
         response = self.__api.post('http://127.0.0.1:5000/lobby-by-page', json=payload)
         print('from server', response)
-        return response
+        return response.json()
       except:
         print('Error ao buscar lobby por página!')
         raise Exception('Error ao buscar lobby por página!')
@@ -40,7 +40,7 @@ class LobbyService:
         payload = {'requester': lobby_1, 'challenge': lobby_2}     
         response = self.__api.post('http://127.0.0.1:5000/match', json=payload)   
         print('from server', response)
-        return response
+        return response.json()
       except:
         print('Error ao aceitar desafio entre lobbies!')
         raise Exception('Error ao aceitar desafio entre lobbies!')
@@ -50,7 +50,7 @@ class LobbyService:
         payload = {'lobbyid': lobbyId, 'userid': userId}   
         response = self.__api.post('http://127.0.0.1:5000/lobby-leave', json=payload)     
         print('from server', response)
-        return response
+        return response.json()
       except:
         print('Error ao sair da lobby!')
         raise Exception('Error ao sair da lobby!')
@@ -61,7 +61,7 @@ class LobbyService:
         payload = {'userId': userId, 'gameId': gameId} 
         response = self.__api.post('http://127.0.0.1:5000/lobby', json=payload)       
         print('from server', response)
-        return response
+        return response.json()
       except:
         print('Error ao criar lobby!')
         raise Exception('Error ao criar lobby!')
@@ -72,7 +72,7 @@ class LobbyService:
         payload = {'lobbyid': lobbyId, 'userid': userId} 
         response = self.__api.post('http://127.0.0.1:5000/lobby-enter', json=payload)       
         print('from server', response)
-        return response
+        return response.json()
       except:
         print('Error ao entrar em lobby!')
         raise Exception('Error ao entrar em lobby!')
@@ -82,7 +82,7 @@ class LobbyService:
         payload = params     
         response = self.__api.post('http://127.0.0.1:5000/lobby-by-id', json=payload)
         print('from server', response)
-        return response
+        return response.json()
       except:
         print('Error ao buscar lobby!')
         raise Exception('Error ao buscar lobby!')
