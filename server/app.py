@@ -19,9 +19,6 @@ def session():
     res = make_response(sessionController.PostSession(payload))
     return res
 
-if __name__ == '__main__':
-    app.run()
-
 @app.get("/lobby")
 def lobbies():
     res = make_response(lobbyController.GetAllLobbies())
@@ -99,3 +96,6 @@ def rejectChallenge():
     payload = request.json
     res = make_response(matchController.RejectChallenge(payload))
     return res
+
+if __name__ == '__main__':
+    app.run()
