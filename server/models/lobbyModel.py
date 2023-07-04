@@ -90,13 +90,13 @@ def getLobbiesByName(name):
     
     return lobbyDict
 
-def createLobby(userId, gameId):
+def createLobby(userId, game):
     user = usersModel.getUserById(userId)
 
     name = 'TIME_' + user['username']
 
     databaseConn = database.DB().db
-    cursor = databaseConn.execute('INSERT INTO lobby (name,gameid) VALUES (?, ?)', (name, gameId,))
+    cursor = databaseConn.execute('INSERT INTO lobby (name,game) VALUES (?, ?)', (name, game,))
     idlobby = cursor.lastrowid
     databaseConn.execute('INSERT INTO lobby_has_user (lobby_idlobby, user_iduser) VALUES (?, ?) ', (idlobby, userId))
     databaseConn.commit()
