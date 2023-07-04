@@ -51,7 +51,7 @@ def enterLobby():
     return res
 
 @app.post("/check-for-challenges")
-def leaveLobby():
+def checkFormChallenges():
     payload = request.json
     res = make_response(matchController.CheckForLobbies(payload))
     return res
