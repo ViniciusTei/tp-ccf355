@@ -69,7 +69,7 @@ class HomePage(Frame):
 
     def __handleCreateLobbyButton(self):
         response = GamesService().getAllGames()
-        self.__games = response['games']
+        self.__games = response
         gameValues = []
         for game in self.__games:
             gameValues.append(game['name'])
@@ -93,7 +93,7 @@ class HomePage(Frame):
     def __createNewLobby(self):
         for g in self.__games:
             if self.__selectedGameValue.get() == g['name']:
-                gameId = g['id']
+                gameId = g['appid']
         
         #response = API().POST('/lobby', {'userId': self.__controller.user['id'], 'gameId': gameId})
         response = LobbyService().createLobby(self.__controller.user['id'],gameId)
